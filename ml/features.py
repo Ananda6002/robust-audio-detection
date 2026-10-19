@@ -73,6 +73,9 @@ def compute_mel_filterbank(
         enorm = 2.0 / (hz_points[i + 2] - hz_points[i])
         weights[i] *= enorm
 
+    # Ensure all filterbank weights are strictly non-negative
+    weights = np.maximum(0.0, weights)
+
     return weights
 
 
