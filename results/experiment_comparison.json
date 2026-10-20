@@ -1,0 +1,58 @@
+{
+  "title": "AcoustiGuard AI \u2014 Experiment A vs Experiment B Comparison",
+  "description": "Comparative evaluation of clean baseline vs noise-augmented sound classification under variable SNR.",
+  "test_fold": 10,
+  "is_smoke_test": true,
+  "noise_type": "ambient",
+  "comparison_table": [
+    {
+      "condition": "Clean",
+      "baseline_accuracy": 0.0,
+      "augmented_accuracy": 0.0,
+      "delta_accuracy": 0.0,
+      "baseline_macro_f1": 0.0,
+      "augmented_macro_f1": 0.0,
+      "delta_macro_f1": 0.0
+    },
+    {
+      "condition": "20 dB",
+      "baseline_accuracy": 0.0,
+      "augmented_accuracy": 0.0,
+      "delta_accuracy": 0.0,
+      "baseline_macro_f1": 0.0,
+      "augmented_macro_f1": 0.0,
+      "delta_macro_f1": 0.0
+    },
+    {
+      "condition": "10 dB",
+      "baseline_accuracy": 0.0,
+      "augmented_accuracy": 0.0,
+      "delta_accuracy": 0.0,
+      "baseline_macro_f1": 0.0,
+      "augmented_macro_f1": 0.0,
+      "delta_macro_f1": 0.0
+    },
+    {
+      "condition": "5 dB",
+      "baseline_accuracy": 0.0,
+      "augmented_accuracy": 0.0,
+      "delta_accuracy": 0.0,
+      "baseline_macro_f1": 0.0,
+      "augmented_macro_f1": 0.0,
+      "delta_macro_f1": 0.0
+    },
+    {
+      "condition": "0 dB",
+      "baseline_accuracy": 0.0,
+      "augmented_accuracy": 0.0,
+      "delta_accuracy": 0.0,
+      "baseline_macro_f1": 0.0,
+      "augmented_macro_f1": 0.0,
+      "delta_macro_f1": 0.0
+    }
+  ],
+  "baseline_model": "C:\\Users\\Anand\\robust_audio_detection\\models\\baseline_cnn_best.pt",
+  "augmented_model": "C:\\Users\\Anand\\robust_audio_detection\\models\\augmented_cnn_best.pt",
+  "comparison_curve_plot": "C:\\Users\\Anand\\robust_audio_detection\\results\\comparison_snr_curve.png",
+  "timestamp": 1792505394.1134012
+}

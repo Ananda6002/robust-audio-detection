@@ -1,0 +1,106 @@
+{
+  "experiment_name": "Experiment C: Confidence-Aware Prediction",
+  "description": "Temperature Scaling calibration and selective abstention on low confidence.",
+  "checkpoint": "models\\augmented_cnn_best.pt",
+  "test_fold": 10,
+  "optimal_temperature": 2.3611857891082764,
+  "test_uncalibrated_ece": 0.237257419526577,
+  "test_calibrated_ece": 0.1536489024758339,
+  "default_threshold": 0.7,
+  "default_metrics": {
+    "total_samples": 10,
+    "accepted_samples": 0,
+    "rejected_samples": 10,
+    "coverage_rate": 0.0,
+    "rejection_rate": 1.0,
+    "abstention_label": "Uncertain \u2014 manual review recommended"
+  },
+  "threshold_sweep": [
+    {
+      "threshold": 0.5,
+      "num_accepted": 0,
+      "num_rejected": 10,
+      "coverage_rate": 0.0,
+      "rejection_rate": 1.0,
+      "selective_accuracy": 1.0,
+      "selective_risk": 0.0
+    },
+    {
+      "threshold": 0.6,
+      "num_accepted": 0,
+      "num_rejected": 10,
+      "coverage_rate": 0.0,
+      "rejection_rate": 1.0,
+      "selective_accuracy": 1.0,
+      "selective_risk": 0.0
+    },
+    {
+      "threshold": 0.65,
+      "num_accepted": 0,
+      "num_rejected": 10,
+      "coverage_rate": 0.0,
+      "rejection_rate": 1.0,
+      "selective_accuracy": 1.0,
+      "selective_risk": 0.0
+    },
+    {
+      "threshold": 0.7,
+      "num_accepted": 0,
+      "num_rejected": 10,
+      "coverage_rate": 0.0,
+      "rejection_rate": 1.0,
+      "selective_accuracy": 1.0,
+      "selective_risk": 0.0
+    },
+    {
+      "threshold": 0.75,
+      "num_accepted": 0,
+      "num_rejected": 10,
+      "coverage_rate": 0.0,
+      "rejection_rate": 1.0,
+      "selective_accuracy": 1.0,
+      "selective_risk": 0.0
+    },
+    {
+      "threshold": 0.8,
+      "num_accepted": 0,
+      "num_rejected": 10,
+      "coverage_rate": 0.0,
+      "rejection_rate": 1.0,
+      "selective_accuracy": 1.0,
+      "selective_risk": 0.0
+    },
+    {
+      "threshold": 0.85,
+      "num_accepted": 0,
+      "num_rejected": 10,
+      "coverage_rate": 0.0,
+      "rejection_rate": 1.0,
+      "selective_accuracy": 1.0,
+      "selective_risk": 0.0
+    },
+    {
+      "threshold": 0.9,
+      "num_accepted": 0,
+      "num_rejected": 10,
+      "coverage_rate": 0.0,
+      "rejection_rate": 1.0,
+      "selective_accuracy": 1.0,
+      "selective_risk": 0.0
+    },
+    {
+      "threshold": 0.95,
+      "num_accepted": 0,
+      "num_rejected": 10,
+      "coverage_rate": 0.0,
+      "rejection_rate": 1.0,
+      "selective_accuracy": 1.0,
+      "selective_risk": 0.0
+    }
+  ],
+  "plots": {
+    "reliability_diagram": "C:\\Users\\Anand\\robust_audio_detection\\results\\reliability_diagram.png",
+    "risk_coverage_curve": "C:\\Users\\Anand\\robust_audio_detection\\results\\risk_coverage_curve.png"
+  },
+  "timestamp": 1792506097.6381295
+}

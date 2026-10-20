@@ -1,0 +1,1724 @@
+{
+  "benchmark_name": "Noise Robustness Benchmark: baseline_cnn_best.pt",
+  "checkpoint": "C:\\Users\\Anand\\robust_audio_detection\\models\\baseline_cnn_best.pt",
+  "test_fold": 10,
+  "noise_type": "ambient",
+  "is_smoke_test": true,
+  "samples_evaluated": 5,
+  "conditions": {
+    "Clean": {
+      "accuracy": 0.0,
+      "macro_precision": 0.0,
+      "macro_recall": 0.0,
+      "macro_f1": 0.0,
+      "total_samples": 5,
+      "per_class": {
+        "air_conditioner": {
+          "class_id": 0,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        },
+        "car_horn": {
+          "class_id": 1,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        },
+        "children_playing": {
+          "class_id": 2,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        },
+        "dog_bark": {
+          "class_id": 3,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        },
+        "drilling": {
+          "class_id": 4,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        },
+        "engine_idling": {
+          "class_id": 5,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        },
+        "gun_shot": {
+          "class_id": 6,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        },
+        "jackhammer": {
+          "class_id": 7,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        },
+        "siren": {
+          "class_id": 8,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        },
+        "street_music": {
+          "class_id": 9,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 5
+        }
+      },
+      "confusion_matrix_raw": [
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          5,
+          0,
+          0
+        ]
+      ],
+      "confusion_matrix_norm": [
+        [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0
+        ]
+      ],
+      "class_names": [
+        "air_conditioner",
+        "car_horn",
+        "children_playing",
+        "dog_bark",
+        "drilling",
+        "engine_idling",
+        "gun_shot",
+        "jackhammer",
+        "siren",
+        "street_music"
+      ],
+      "top3_accuracy": 0.0,
+      "elapsed_time_sec": 0.09214240000437712,
+      "snr_db": null
+    },
+    "20 dB": {
+      "accuracy": 0.0,
+      "macro_precision": 0.0,
+      "macro_recall": 0.0,
+      "macro_f1": 0.0,
+      "total_samples": 5,
+      "per_class": {
+        "air_conditioner": {
+          "class_id": 0,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        },
+        "car_horn": {
+          "class_id": 1,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        },
+        "children_playing": {
+          "class_id": 2,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        },
+        "dog_bark": {
+          "class_id": 3,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        },
+        "drilling": {
+          "class_id": 4,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        },
+        "engine_idling": {
+          "class_id": 5,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        },
+        "gun_shot": {
+          "class_id": 6,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        },
+        "jackhammer": {
+          "class_id": 7,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        },
+        "siren": {
+          "class_id": 8,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        },
+        "street_music": {
+          "class_id": 9,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 5
+        }
+      },
+      "confusion_matrix_raw": [
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          1,
+          0,
+          0,
+          4,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "confusion_matrix_norm": [
+        [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.2,
+          0.0,
+          0.0,
+          0.8,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      ],
+      "class_names": [
+        "air_conditioner",
+        "car_horn",
+        "children_playing",
+        "dog_bark",
+        "drilling",
+        "engine_idling",
+        "gun_shot",
+        "jackhammer",
+        "siren",
+        "street_music"
+      ],
+      "top3_accuracy": 0.0,
+      "elapsed_time_sec": 0.13378709999960847,
+      "snr_db": 20.0
+    },
+    "10 dB": {
+      "accuracy": 0.0,
+      "macro_precision": 0.0,
+      "macro_recall": 0.0,
+      "macro_f1": 0.0,
+      "total_samples": 5,
+      "per_class": {
+        "air_conditioner": {
+          "class_id": 0,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        },
+        "car_horn": {
+          "class_id": 1,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        },
+        "children_playing": {
+          "class_id": 2,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        },
+        "dog_bark": {
+          "class_id": 3,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        },
+        "drilling": {
+          "class_id": 4,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        },
+        "engine_idling": {
+          "class_id": 5,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        },
+        "gun_shot": {
+          "class_id": 6,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        },
+        "jackhammer": {
+          "class_id": 7,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        },
+        "siren": {
+          "class_id": 8,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        },
+        "street_music": {
+          "class_id": 9,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 5
+        }
+      },
+      "confusion_matrix_raw": [
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          5,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "confusion_matrix_norm": [
+        [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      ],
+      "class_names": [
+        "air_conditioner",
+        "car_horn",
+        "children_playing",
+        "dog_bark",
+        "drilling",
+        "engine_idling",
+        "gun_shot",
+        "jackhammer",
+        "siren",
+        "street_music"
+      ],
+      "top3_accuracy": 0.0,
+      "elapsed_time_sec": 0.12417609999829438,
+      "snr_db": 10.0
+    },
+    "5 dB": {
+      "accuracy": 0.0,
+      "macro_precision": 0.0,
+      "macro_recall": 0.0,
+      "macro_f1": 0.0,
+      "total_samples": 5,
+      "per_class": {
+        "air_conditioner": {
+          "class_id": 0,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        },
+        "car_horn": {
+          "class_id": 1,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        },
+        "children_playing": {
+          "class_id": 2,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        },
+        "dog_bark": {
+          "class_id": 3,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        },
+        "drilling": {
+          "class_id": 4,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        },
+        "engine_idling": {
+          "class_id": 5,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        },
+        "gun_shot": {
+          "class_id": 6,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        },
+        "jackhammer": {
+          "class_id": 7,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        },
+        "siren": {
+          "class_id": 8,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        },
+        "street_music": {
+          "class_id": 9,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 5
+        }
+      },
+      "confusion_matrix_raw": [
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          5,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "confusion_matrix_norm": [
+        [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      ],
+      "class_names": [
+        "air_conditioner",
+        "car_horn",
+        "children_playing",
+        "dog_bark",
+        "drilling",
+        "engine_idling",
+        "gun_shot",
+        "jackhammer",
+        "siren",
+        "street_music"
+      ],
+      "top3_accuracy": 0.0,
+      "elapsed_time_sec": 0.13255170000047656,
+      "snr_db": 5.0
+    },
+    "0 dB": {
+      "accuracy": 0.0,
+      "macro_precision": 0.0,
+      "macro_recall": 0.0,
+      "macro_f1": 0.0,
+      "total_samples": 5,
+      "per_class": {
+        "air_conditioner": {
+          "class_id": 0,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        },
+        "car_horn": {
+          "class_id": 1,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        },
+        "children_playing": {
+          "class_id": 2,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        },
+        "dog_bark": {
+          "class_id": 3,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        },
+        "drilling": {
+          "class_id": 4,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        },
+        "engine_idling": {
+          "class_id": 5,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        },
+        "gun_shot": {
+          "class_id": 6,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        },
+        "jackhammer": {
+          "class_id": 7,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        },
+        "siren": {
+          "class_id": 8,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        },
+        "street_music": {
+          "class_id": 9,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 5
+        }
+      },
+      "confusion_matrix_raw": [
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          5,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "confusion_matrix_norm": [
+        [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      ],
+      "class_names": [
+        "air_conditioner",
+        "car_horn",
+        "children_playing",
+        "dog_bark",
+        "drilling",
+        "engine_idling",
+        "gun_shot",
+        "jackhammer",
+        "siren",
+        "street_music"
+      ],
+      "top3_accuracy": 0.0,
+      "elapsed_time_sec": 0.13402679999853717,
+      "snr_db": 0.0
+    }
+  },
+  "summary": {
+    "condition_labels": [
+      "Clean",
+      "20 dB",
+      "10 dB",
+      "5 dB",
+      "0 dB"
+    ],
+    "macro_f1_scores": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "accuracies": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "timestamp": 1792505393.7898593
+}

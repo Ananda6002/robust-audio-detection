@@ -1,0 +1,392 @@
+{
+  "experiment_name": "Experiment B: Noise-Augmented CNN",
+  "description": "CNN trained with training-time additive ambient noise (SNR 5-25 dB).",
+  "dataset": "UrbanSound8K",
+  "is_smoke_test": true,
+  "train_folds": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+  ],
+  "val_fold": 9,
+  "test_fold": 10,
+  "total_epochs_trained": 3,
+  "metrics": {
+    "accuracy": 0.0,
+    "macro_precision": 0.0,
+    "macro_recall": 0.0,
+    "macro_f1": 0.0,
+    "total_samples": 10,
+    "per_class": {
+      "air_conditioner": {
+        "class_id": 0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "support": 0
+      },
+      "car_horn": {
+        "class_id": 1,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "support": 0
+      },
+      "children_playing": {
+        "class_id": 2,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "support": 0
+      },
+      "dog_bark": {
+        "class_id": 3,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "support": 0
+      },
+      "drilling": {
+        "class_id": 4,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "support": 0
+      },
+      "engine_idling": {
+        "class_id": 5,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "support": 0
+      },
+      "gun_shot": {
+        "class_id": 6,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "support": 0
+      },
+      "jackhammer": {
+        "class_id": 7,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "support": 0
+      },
+      "siren": {
+        "class_id": 8,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "support": 0
+      },
+      "street_music": {
+        "class_id": 9,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "support": 10
+      }
+    },
+    "confusion_matrix_raw": [
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        10,
+        0,
+        0
+      ]
+    ],
+    "confusion_matrix_norm": [
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "class_names": [
+      "air_conditioner",
+      "car_horn",
+      "children_playing",
+      "dog_bark",
+      "drilling",
+      "engine_idling",
+      "gun_shot",
+      "jackhammer",
+      "siren",
+      "street_music"
+    ],
+    "top3_accuracy": 0.0
+  },
+  "history": {
+    "train_loss": [
+      2.3538811922073366,
+      1.7467796683311463,
+      1.3478154301643372
+    ],
+    "val_loss": [
+      3.9173709869384767,
+      9.176254081726075,
+      11.928824996948242
+    ],
+    "train_acc": [
+      0.1125,
+      0.375,
+      0.475
+    ],
+    "val_acc": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "model_parameters": {
+    "total_params": 767722,
+    "trainable_params": 767722,
+    "non_trainable_params": 0
+  },
+  "model_size_mb": 2.9313430786132812,
+  "cpu_latency_stats": {
+    "mean_latency_ms": 14.209307670593262,
+    "p50_latency_ms": 14.281999588012695,
+    "p95_latency_ms": 16.22686004638672,
+    "min_latency_ms": 12.160899997979868,
+    "max_latency_ms": 17.526299998280592,
+    "device": "cpu"
+  },
+  "elapsed_training_seconds": 13.887118816375732
+}
