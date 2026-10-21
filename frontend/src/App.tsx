@@ -304,7 +304,7 @@ export default function App() {
       {/* Top Navigation & Telemetry Bar */}
       <header className="sticky top-0 z-50 glass-panel border-b border-slate-800/80 px-6 py-3.5 backdrop-blur-xl">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
-          {/* Logo & Research Branding */}
+          {/* Logo & App Branding */}
           <div className="flex items-center space-x-3">
             <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-600 to-sky-500 flex items-center justify-center shadow-lg shadow-brand-500/20 border border-brand-400/30">
               <ShieldCheck className="w-6 h-6 text-white" />
@@ -317,7 +317,7 @@ export default function App() {
                 </span>
               </div>
               <p className="text-xs text-slate-400 hidden sm:block">
-                Noise-Robust Environmental Sound Classification & Uncertainty Calibration
+                Noise-Robust Environmental Audio Classification &amp; Confidence-Aware Inference
               </p>
             </div>
           </div>
@@ -357,7 +357,7 @@ export default function App() {
               }`}
             >
               <BarChart3 className="w-3.5 h-3.5" />
-              <span>Research Analytics</span>
+              <span>Performance Analytics</span>
             </button>
 
             <button
@@ -1017,39 +1017,39 @@ export default function App() {
         )}
 
         {/* ==================================================== */}
-        {/* TAB 3: RESEARCH DASHBOARD (REAL EXPERIMENT ARTIFACTS)*/}
+        {/* TAB 3: PERFORMANCE ANALYTICS & BENCHMARKS           */}
         {/* ==================================================== */}
         {activeTab === "research" && (
           <div className="space-y-6">
             <div>
               <h1 className="text-2xl font-bold tracking-tight text-white flex items-center space-x-2">
-                <span>Scientific Research Dashboard</span>
+                <span>Performance &amp; Evaluation Benchmarks</span>
                 <span className="text-xs font-normal text-brand-400 bg-brand-500/10 px-2.5 py-0.5 rounded-md border border-brand-500/20">
-                  Live Artifact Telemetry
+                  Model Telemetry
                 </span>
               </h1>
               <p className="text-sm text-slate-400 mt-1">
-                Evaluation results loaded directly from generated experiment artifacts (Experiment A: Baseline, Experiment B: Noise Augmentation, Experiment C: Confidence-Aware Prediction).
+                Evaluation metrics and benchmarks loaded directly from model evaluation runs (Baseline Model, Noise-Augmented Model, and Selective Classification).
               </p>
             </div>
 
             {loadingMetrics ? (
               <div className="glass-panel p-12 text-center rounded-2xl flex flex-col items-center justify-center space-y-3">
                 <RefreshCw className="w-8 h-8 text-brand-400 animate-spin" />
-                <p className="text-sm text-slate-300 font-medium">Loading experiment results from disk...</p>
+                <p className="text-sm text-slate-300 font-medium">Loading evaluation results from disk...</p>
               </div>
             ) : metricsData ? (
               <div className="space-y-6">
-                {/* 1. Experiment A vs B Comparison Table */}
+                {/* 1. Model Comparison Table */}
                 {metricsData.data?.comparison?.comparison_table && (
                   <div className="glass-panel p-6 rounded-2xl space-y-4">
                     <div className="flex items-center justify-between">
                       <div>
                         <h2 className="text-base font-bold text-white">
-                          Experiment Comparison: Baseline (Exp A) vs. Noise-Augmented (Exp B)
+                          Model Comparison: Baseline vs. Noise-Augmented
                         </h2>
                         <p className="text-xs text-slate-400 mt-0.5">
-                          Measured on held-out test fold under variable Signal-to-Noise Ratios (Clean &rarr; 0 dB).
+                          Evaluated on held-out test data under variable Signal-to-Noise Ratios (Clean &rarr; 0 dB).
                         </p>
                       </div>
                       <span className="text-xs font-mono text-brand-400 bg-brand-500/10 px-2.5 py-1 rounded-full border border-brand-500/20">
@@ -1297,11 +1297,11 @@ export default function App() {
                   </div>
                 </div>
 
-                {/* Documented Research Limitations */}
+                {/* Technical Limitations */}
                 <div className="glass-panel p-6 rounded-2xl space-y-3 md:col-span-2">
                   <h2 className="text-sm font-semibold text-white flex items-center space-x-2">
                     <HelpCircle className="w-4 h-4 text-amber-400" />
-                    <span>Documented Research Limitations & Constraints</span>
+                    <span>Technical &amp; Operational Limitations</span>
                   </h2>
 
                   <ul className="space-y-2 text-xs text-slate-400">
@@ -1321,7 +1321,7 @@ export default function App() {
 
       {/* Footer */}
       <footer className="border-t border-slate-900 py-6 text-center text-xs text-slate-500 font-mono">
-        AcoustiGuard AI &bull; Computer Science Engineering Deep Learning Research &bull; UrbanSound8K Benchmark
+        AcoustiGuard AI &bull; Environmental Audio Classification Application &bull; UrbanSound8K
       </footer>
     </div>
   );

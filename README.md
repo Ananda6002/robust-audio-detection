@@ -1,142 +1,233 @@
-# AcoustiGuard AI: Noise-Robust Environmental Sound Classification
+# AcoustiGuard AI
 
-A research-oriented deep learning system for robust environmental sound classification under variable signal-to-noise ratios (SNR), featuring confidence-aware prediction, temperature-scaled calibration, and selective classification.
-
----
-
-## 1. Research Problem & Objectives
-
-### Research Question
-> *"Can noise augmentation improve the robustness of environmental sound classification under varying signal-to-noise ratios, and can confidence-aware prediction reliably detect and reject degraded or out-of-distribution audio inputs?"*
-
-### Objectives
-1. **Baseline Sound Classification:** Train a compact Convolutional Neural Network (CNN) on log-mel spectrogram representations of urban environmental audio using the official UrbanSound8K fold protocol.
-2. **Noise Robustness Evaluation:** Quantify classification degradation across controlled Signal-to-Noise Ratios (20 dB, 10 dB, 5 dB, 0 dB) using additive ambient background noise.
-3. **Noise Augmentation Defense:** Train noise-augmented models with training-only additive noise (preserving strict test-set isolation) and measure generalization gains across SNRs.
-4. **Confidence Calibration & Selective Classification:** Apply temperature scaling calibration on validation data and introduce an uncertainty threshold mechanism to abstain from low-confidence predictions ("Uncertain — manual review recommended").
-5. **Interactive Scientific Application:** Deploy the trained pipeline with a high-performance FastAPI backend and a React/Vite/Tailwind CSS web dashboard ("AcoustiGuard AI") with real-time waveform/spectrogram rendering and robustness testing labs.
+**AcoustiGuard AI** is an AI-powered environmental sound classification application designed for reliable audio recognition in noisy, real-world environments. Built on PyTorch, FastAPI, and React, the system classifies 10 urban sound categories from the UrbanSound8K benchmark, evaluates resilience against severe acoustic corruptions (down to 0 dB SNR), and employs temperature-calibrated confidence thresholding to flag ambiguous inputs as *"Uncertain — manual review recommended"*.
 
 ---
 
-## 2. Dataset: UrbanSound8K
+## Key Capabilities
 
-The primary benchmark used is **UrbanSound8K**:
-* **Source:** [UrbanSound8K Official Dataset](https://urbansounddataset.weebly.com/urbansound8k.html)
-* **Scale:** 8,732 audio excerpts (<= 4.0s duration) across 10 urban sound classes:
-  0. `air_conditioner`
-  1. `car_horn`
-  2. `children_playing`
-  3. `dog_bark`
-  4. `drilling`
-  5. `engine_idling`
-  6. `gun_shot`
-  7. `jackhammer`
-  8. `siren`
-  9. `street_music`
-* **Predefined Folds:** 10 predefined folds (`fold1` to `fold10`). 
-* **Leakage Prevention Rule:** Audio slices from the same original recording are placed in the same fold. **Never randomly mix slices across folds.** All cross-validation and train/validation/test splits strictly adhere to the predefined fold structure.
-
-### Dataset Directory Setup
-Download and extract UrbanSound8K into the `data/` directory:
-```
-robust_audio_detection/
-├── data/
-│   └── UrbanSound8K/
-│       ├── audio/
-│       │   ├── fold1/
-│       │   ├── fold2/
-│       │   └── ... fold10/
-│       └── metadata/
-│           └── UrbanSound8K.csv
-```
-> **Note:** The dataset and model checkpoints (`.pt`, `.pth`) are excluded from Git via `.gitignore`.
+- **10-Class Environmental Sound Classification**: Accurately classifies urban audio recordings across 10 categories: *air conditioner, car horn, children playing, dog bark, drilling, engine idling, gun shot, jackhammer, siren, and street music*.
+- **Noise Robustness Defense**: Features both a standard Baseline model and a Noise-Augmented model trained with synthetic additive noise (white, pink, brown, and ambient noise across 5–25 dB SNRs) to preserve accuracy under real-world acoustic degradation.
+- **Controlled Noise Stress-Testing Lab**: Evaluates model performance across user-specified Signal-to-Noise Ratios (20 dB, 10 dB, 5 dB, 0 dB) and noise colorations with interactive side-by-side confidence drops and verdict analysis.
+- **Confidence-Aware Selective Classification**: Utilizes post-hoc temperature scaling to calibrate softmax probabilities, rejecting low-confidence predictions below a tunable threshold $\tau \in [0.50, 0.95]$ to minimize false alarms in mission-critical monitoring.
+- **Interactive Full-Stack Interface**: High-performance FastAPI backend serving cached PyTorch models paired with a responsive React + Vite + Tailwind CSS dashboard featuring audio playback, waveform visualization, and live model comparison metrics.
 
 ---
 
-## 3. Repository Architecture
+## System Architecture
 
 ```
 robust_audio_detection/
-├── backend/               # FastAPI application & REST endpoints
-│   ├── app/
-│   │   ├── main.py        # API server entrypoint
-│   │   ├── routes/        # /api/predict, /api/robustness-test, /api/metrics
-│   │   └── schemas/       # Pydantic request/response models
-├── frontend/              # AcoustiGuard AI web application (React, Vite, TS, Tailwind)
+├── ml/                                 # Audio processing & deep learning pipeline
+│   ├── config.py                       # Audio specs (22,050 Hz, 4s, 128 mels), fold logic, SNRs
+│   ├── metadata.py                     # UrbanSound8K CSV validator & 10-fold split manager
+│   ├── preprocessing.py                # Resampling, mono downmix, zero-padding / centering
+│   ├── features.py                     # Mel filterbank & log-mel spectrogram extraction
+│   ├── dataset.py                      # PyTorch Dataset & DataLoader factory with leakage check
+│   ├── models.py                       # AcousticCNN architecture (767,722 parameters, 2.93 MB)
+│   ├── training_utils.py               # Hardware selector, deterministic seeding, EarlyStopping
+│   ├── metrics.py                      # Accuracy, F1, per-class metrics, confusion matrices
+│   ├── augmentation.py                 # Additive noise mixing (white/pink/brown/ambient at 20-0 dB)
+│   └── calibration.py                  # Temperature scaling (L-BFGS on validation NLL), ECE/MCE
+│
+├── experiments/                        # Model training & evaluation scripts
+│   ├── train_baseline.py               # Train Baseline AcousticCNN on clean audio
+│   ├── train_augmented.py              # Train Noise-Augmented AcousticCNN
+│   ├── evaluate.py                     # Standalone model evaluator
+│   ├── evaluate_noise.py               # Multi-SNR robustness benchmark
+│   └── evaluate_selective.py           # Confidence calibration & selective prediction analysis
+│
+├── models/                             # Saved model checkpoints & scalers
+│   ├── baseline_cnn_best.pt            # Baseline model weights
+│   ├── augmented_cnn_best.pt           # Noise-augmented model weights
+│   └── temperature_scaler.pt           # Learned temperature parameter ($T$)
+│
+├── results/                            # Metrics JSONs and performance visualizations
+│   ├── baseline_metrics.json           # Baseline model test metrics
+│   ├── augmented_metrics.json          # Augmented model test metrics
+│   ├── experiment_comparison.json      # Comparison table across SNRs
+│   ├── selective_prediction_report.json# Coverage vs. risk data
+│   └── *.png                           # Confusion matrices, SNR degradation curves, loss plots
+│
+├── backend/                            # FastAPI REST API
+│   └── app/
+│       ├── main.py                     # Server entrypoint, CORS, static mounts, /api/health
+│       └── routes/
+│           ├── predict.py              # POST /api/predict & POST /api/robustness-test
+│           └── analytics.py            # GET /api/model-info, /api/metrics, /api/experiments
+│
+├── frontend/                           # React / Vite / TypeScript dashboard
 │   ├── src/
-│   │   ├── components/    # Audio upload, spectrogram visualizer, robustness lab
-│   │   └── pages/         # Dashboard, Lab, Experiment Analytics, Model Info
-├── ml/                    # Core deep learning pipeline
-│   ├── config.py          # Centralized audio, model, and training hyperparameters
-│   ├── dataset.py         # PyTorch Dataset, metadata loader, fold partitioner
-│   ├── preprocessing.py   # Audio normalization, resampling, fixed-duration padding/cropping
-│   ├── features.py        # Log-mel spectrogram extraction
-│   ├── models.py          # Compact CNN architecture (AcousticCNN)
-│   └── augmentation.py    # Training-time noise injection and SNR scaling
-├── experiments/           # Experiment runners & calibration
-│   ├── train_baseline.py  # Exp A: Baseline training on clean audio
-│   ├── train_augmented.py # Exp B: Noise-augmented training
-│   ├── evaluate_noise.py  # Benchmark clean vs noisy across SNRs (20, 10, 5, 0 dB)
-│   └── calibrate.py       # Exp C: Temperature scaling & selective prediction
-├── research/              # Literature review, citations, research report draft
-├── docs/                  # Architecture specs, evaluation protocols, API reference
-├── tests/                 # Unit and integration test suites (Pytest)
-├── results/               # Real evaluation metrics JSONs, confusion matrices, loss curves
-├── requirements.txt       # Python dependencies
-└── README.md
+│   │   ├── App.tsx                     # Main interactive application UI
+│   │   ├── App.test.tsx                # Vitest automated test suite
+│   │   ├── main.tsx                    # React DOM bootstrap
+│   │   └── index.css                   # Global dark styling & glassmorphism
+│   ├── tailwind.config.js              # Theme color palette
+│   └── vite.config.ts                  # Vite build & API proxy configuration
+│
+└── tests/                              # Automated test suites
+    ├── test_data_pipeline.py           # 11 unit tests for audio, dataset, and zero-leakage
+    └── test_backend.py                 # 9 integration tests for FastAPI REST endpoints
 ```
 
 ---
 
-## 4. Experimental Framework
+## Technology Stack
 
-| Experiment | Description | Training Condition | Evaluation Conditions |
-|---|---|---|---|
-| **Experiment A (Baseline)** | Standard Compact CNN | Clean audio only | Clean audio + Noisy (20, 10, 5, 0 dB) |
-| **Experiment B (Augmented)** | Noise-Augmented CNN | Clean + Additive Noise (Random SNR 5-25 dB) | Clean audio + Noisy (20, 10, 5, 0 dB) |
-| **Experiment C (Confidence-Aware)** | Calibrated Prediction + Abstention | Temperature-scaled logits on validation fold | Selective coverage vs. risk at $\tau \in [0.5, 0.95]$ |
-
-### Evaluation Metrics
-- **Classification Performance:** Overall Accuracy, Macro Precision, Macro Recall, Macro F1-score, Per-Class F1.
-- **Robustness:** Macro F1 vs SNR curves.
-- **Operational Metrics:** Model Parameter Count, Model Size (MB), Inference Latency (CPU vs GPU in ms).
-- **Uncertainty Metrics:** Expected Calibration Error (ECE), Coverage Rate (% answered), Selective Risk (Error rate on answered queries).
+| Layer | Technologies |
+|---|---|
+| **Deep Learning & Audio** | PyTorch, TorchAudio, NumPy, SciPy, Librosa, SoundFile |
+| **Backend REST API** | FastAPI, Uvicorn, Python-Multipart, Pydantic, HTTPX |
+| **Frontend Dashboard** | React 18, Vite, TypeScript, Tailwind CSS, Lucide React, Recharts |
+| **Testing & Quality** | Pytest (Python), Vitest (React/TypeScript) |
 
 ---
 
-## 5. Quickstart & Installation
+## Installation & Setup
 
-### Local Environment Setup
+### Prerequisites
+- Python 3.10+ (Tested on Python 3.11 & 3.14)
+- Node.js 18+ and npm 9+
+- Git
+
+### 1. Backend & ML Setup
+
 ```powershell
-# 1. Clone repository and navigate to root
+# Navigate to the project root
 cd robust_audio_detection
 
-# 2. Create and activate virtual environment
+# Create and activate a Python virtual environment
 python -m venv venv
-.\venv\Scripts\Activate.ps1
+.\venv\Scripts\Activate.ps1    # On Windows PowerShell
+# source venv/bin/activate      # On Linux / macOS
 
-# 3. Install ML and backend dependencies
+# Install Python dependencies
 pip install -r requirements.txt
 ```
 
-### Running Tests
-```powershell
-pytest tests/ -v
-```
+### 2. Frontend Setup
 
-### Starting Backend & Frontend
 ```powershell
-# Backend (Port 8000)
-uvicorn backend.app.main:app --reload --port 8000
-
-# Frontend (Port 5173)
+# Navigate to the frontend directory
 cd frontend
+
+# Install npm dependencies
 npm install
-npm run dev
+
+# Return to root
+cd ..
 ```
 
 ---
 
-## 6. Citation & Attribution
-UrbanSound8K dataset citation:
-> J. Salamon, C. Jacoby and J. P. Bello, *"A Dataset and Taxonomy for Urban Sound Research"*, 22nd ACM International Conference on Multimedia (ACM-MM'14), Orlando, FL, USA, Nov. 2014.
+## Dataset Configuration
+
+The system uses the **UrbanSound8K** dataset (8,732 audio excerpts $\le 4.0$ seconds across 10 classes and 10 predefined folds).
+
+### Standard UrbanSound8K Setup
+1. Download [UrbanSound8K.tar.gz](https://urbansounddataset.weebly.com/urbansound8k.html).
+2. Extract into the `data/` directory so the folder structure matches:
+   ```
+   robust_audio_detection/data/UrbanSound8K/
+   ├── audio/
+   │   ├── fold1/
+   │   ├── fold2/
+   │   └── ... fold10/
+   └── metadata/
+       └── UrbanSound8K.csv
+   ```
+> **Zero-Leakage Guarantee**: The data partitioner enforces strict fold isolation (folds 1–8 for training, fold 9 for validation, fold 10 for held-out testing). Slices from the same recording share the same `fsID` and are never mixed across splits.
+
+### Automated Smoke-Test Verification Dataset
+To test and verify the entire training and inference pipeline without downloading the full 6 GB dataset, run the built-in synthetic metadata and audio generator:
+
+```powershell
+python -m ml.metadata --smoke-test
+```
+
+---
+
+## Model Training & Evaluation Workflow
+
+All training and evaluation scripts can be executed via Python modules from the project root:
+
+```powershell
+# 1. Train the Baseline CNN (Clean audio only, saves to models/baseline_cnn_best.pt)
+python -m experiments.train_baseline
+
+# 2. Train the Noise-Augmented CNN (Additive noise injection, saves to models/augmented_cnn_best.pt)
+python -m experiments.train_augmented
+
+# 3. Benchmark Noise Robustness across SNRs (Clean, 20 dB, 10 dB, 5 dB, 0 dB)
+python -m experiments.evaluate_noise
+
+# 4. Calibrate Probabilities & Evaluate Selective Classification
+python -m experiments.evaluate_selective
+```
+
+All trained checkpoints are saved to `models/`, and metrics, loss curves, confusion matrices, and SNR curves are exported to `results/`.
+
+---
+
+## Running the Application
+
+### 1. Start the FastAPI Backend Server
+```powershell
+uvicorn backend.app.main:app --host 127.0.0.1 --port 8000 --reload
+```
+The backend API is now running at `http://127.0.0.1:8000`. Interactive Swagger API docs are accessible at `http://127.0.0.1:8000/docs`.
+
+### 2. Start the React Frontend Development Server
+In a separate terminal:
+```powershell
+cd frontend
+npm run dev
+```
+Open your browser and navigate to `http://localhost:5173`.
+
+---
+
+## Application Features & Navigation
+
+- **Audio Analysis Tab**: Upload any WAV, MP3, FLAC, or OGG recording (up to 4.0 seconds). Select between the Baseline and Noise-Augmented models, adjust the confidence rejection threshold, and toggle temperature calibration. View spectrogram representations, predicted class, top probability distributions, and uncertainty flags.
+- **Robustness Lab Tab**: Stress-test any audio sample by injecting controlled levels of synthetic noise (white, pink, brown, ambient) at target SNRs (20 dB, 10 dB, 5 dB, 0 dB). Directly observe confidence drops and whether the classification changes.
+- **Performance Analytics Tab**: Interactive visualization of model benchmarks, accuracy degradation curves across SNRs, risk-coverage trade-offs, and confusion matrices loaded directly from disk.
+- **Model & Taxonomy Tab**: Details on the `AcousticCNN` layer architecture, parameter count, input shape, 10-class taxonomy, and operational limitations.
+
+---
+
+## API Reference
+
+| Method | Endpoint | Description |
+|---|---|---|
+| `GET` | `/api/health` | System health, device (CPU/CUDA), and available model weights |
+| `POST` | `/api/predict` | Run audio classification with threshold rejection & calibration |
+| `POST` | `/api/robustness-test` | Inject noise at target SNR and compare clean vs. noisy predictions |
+| `GET` | `/api/model-info` | Architecture specs, parameter counts, and taxonomy |
+| `GET` | `/api/metrics` | Model comparison tables and performance statistics |
+| `GET` | `/static/results/{filename}` | Serve generated confusion matrices and performance plots |
+
+---
+
+## Running Automated Tests
+
+### Python Backend & Pipeline Tests (Pytest)
+```powershell
+pytest tests/ -v
+```
+- `tests/test_data_pipeline.py`: Validates audio loading, resampling, padding, log-mel spectrogram features, dataset split isolation, and zero-leakage assertions (11 tests).
+- `tests/test_backend.py`: Validates FastAPI `/api/health`, `/api/model-info`, `/api/metrics`, `/api/predict`, and `/api/robustness-test` endpoints (9 tests).
+
+### Frontend UI & Logic Tests (Vitest)
+```powershell
+cd frontend
+npm test
+```
+- `frontend/src/App.test.tsx`: Validates component rendering, navigation tabs, parameter controls, selective classification rejection logic, and taxonomy integrity (6 tests).
+
+### Frontend Production Build
+```powershell
+cd frontend
+npm run build
+```
+Validates TypeScript compilation (`tsc`) and Vite bundling.

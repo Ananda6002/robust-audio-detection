@@ -9,14 +9,14 @@ describe("AcoustiGuard AI Frontend - Component & Logic Suite", () => {
     expect(html).toBeTruthy();
     expect(html).toContain("AcoustiGuard AI");
     expect(html).toContain("UrbanSound8K");
-    expect(html).toContain("Noise-Robust Environmental Sound Classification");
+    expect(html).toContain("Noise-Robust Environmental Audio Classification");
   });
 
-  it("renders the 4 primary research and analysis navigation tabs", () => {
+  it("renders the 4 primary application navigation tabs", () => {
     const html = renderToString(<App />);
     expect(html).toContain("Audio Analysis");
     expect(html).toContain("Robustness Lab");
-    expect(html).toContain("Research Analytics");
+    expect(html).toContain("Performance Analytics");
     expect(html).toContain("Model &amp; Taxonomy");
   });
 
