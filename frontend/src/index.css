@@ -1,0 +1,59 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    color-scheme: dark;
+  }
+  body {
+    @apply bg-slate-950 text-slate-100 min-h-screen font-sans;
+    background-image: 
+      radial-gradient(circle at 15% 15%, rgba(99, 102, 241, 0.08) 0%, transparent 40%),
+      radial-gradient(circle at 85% 85%, rgba(14, 165, 233, 0.06) 0%, transparent 40%);
+    background-attachment: fixed;
+  }
+}
+
+/* Custom Sleek Dark Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #020617;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #1e293b;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #334155;
+}
+
+/* Frosted Glass Scientific Panels */
+.glass-panel {
+  background: rgba(15, 23, 42, 0.75);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.4);
+}
+
+.glass-card-hover {
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.glass-card-hover:hover {
+  border-color: rgba(99, 102, 241, 0.35);
+  transform: translateY(-1px);
+  box-shadow: 0 8px 30px -4px rgba(99, 102, 241, 0.12);
+}
+
+/* Spectrogram Grid Preview Cells */
+.spectrogram-cell {
+  transition: background-color 0.15s ease;
+}
