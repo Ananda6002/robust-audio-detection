@@ -171,28 +171,50 @@ All trained checkpoints are saved to `models/`, and metrics, loss curves, confus
 
 ## Running the Application
 
-### 1. Start the FastAPI Backend Server
-```powershell
-uvicorn backend.app.main:app --host 127.0.0.1 --port 8000 --reload
-```
-The backend API is now running at `http://127.0.0.1:8000`. Interactive Swagger API docs are accessible at `http://127.0.0.1:8000/docs`.
+### Option A: Single-Command Launch (Recommended)
+You can start both the FastAPI backend and the React frontend simultaneously with the unified runner:
 
-### 2. Start the React Frontend Development Server
-In a separate terminal:
 ```powershell
+python run.py
+```
+
+This automated runner:
+- Validates Python and Node.js dependencies.
+- Starts the FastAPI REST server on `http://127.0.0.1:8000`.
+- Starts the React/Vite development server on `http://localhost:5173`.
+- Verifies system health and automatically opens your default web browser to the dashboard.
+- Cleanly stops all server processes when you press `Ctrl+C`.
+
+*Options:*
+- `python run.py --no-browser` (Start servers without opening the browser)
+- `python run.py --port 8000 --frontend-port 5173` (Specify custom ports)
+
+### Option B: Manual Multi-Terminal Startup
+If you prefer running services independently in separate terminal windows:
+
+```powershell
+# Terminal 1: FastAPI Backend (Port 8000)
+uvicorn backend.app.main:app --host 127.0.0.1 --port 8000 --reload
+
+# Terminal 2: React Frontend (Port 5173)
 cd frontend
 npm run dev
 ```
-Open your browser and navigate to `http://localhost:5173`.
+
+Interactive API documentation (Swagger UI) is available at [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs).
 
 ---
 
 ## Application Features & Navigation
 
-- **Audio Analysis Tab**: Upload any WAV, MP3, FLAC, or OGG recording (up to 4.0 seconds). Select between the Baseline and Noise-Augmented models, adjust the confidence rejection threshold, and toggle temperature calibration. View spectrogram representations, predicted class, top probability distributions, and uncertainty flags.
-- **Robustness Lab Tab**: Stress-test any audio sample by injecting controlled levels of synthetic noise (white, pink, brown, ambient) at target SNRs (20 dB, 10 dB, 5 dB, 0 dB). Directly observe confidence drops and whether the classification changes.
-- **Performance Analytics Tab**: Interactive visualization of model benchmarks, accuracy degradation curves across SNRs, risk-coverage trade-offs, and confusion matrices loaded directly from disk.
-- **Model & Taxonomy Tab**: Details on the `AcousticCNN` layer architecture, parameter count, input shape, 10-class taxonomy, and operational limitations.
+- **Audio Analysis Tab**:
+  - **Built-In Acoustic Presets**: Click any quick-test preset button (`🚨 Siren`, `🚗 Car Horn`, `🚚 Engine`, `🔨 Jackhammer`) to generate and load synthetic audio instantly in your browser without requiring external audio files.
+  - **Audio Upload**: Upload any local WAV, MP3, FLAC, or OGG recording (up to 4.0 seconds @ 22,050 Hz).
+  - **Model Selection & Inference**: Choose between the Noise-Augmented model and the Baseline CNN, adjust the confidence rejection threshold slider (50% to 95%), and toggle post-hoc temperature scaling.
+  - **Feature Extraction & Telemetry**: View the standardized waveform envelope, log-mel spectrogram heatmap (128 mel bins), and full 10-class probability distribution.
+- **Robustness Lab Tab**: Stress-test any audio recording by injecting synthetic noise (ambient, pink, brown, white) at controlled SNRs (20 dB, 10 dB, 5 dB, 0 dB). Includes a one-click *"Use Test Siren"* shortcut to test degradation and confidence shift immediately.
+- **Performance Analytics Tab**: View side-by-side comparison tables, accuracy degradation curves across SNRs, risk-coverage trade-offs, and confusion matrices loaded directly from disk.
+- **Model & Taxonomy Tab**: Inspect the `AcousticCNN` layer architecture, parameter count, receptive field, 10-class taxonomy, and operational limitations.
 
 ---
 

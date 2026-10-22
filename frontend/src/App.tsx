@@ -183,22 +183,18 @@ export default function App() {
     }
   };
 
-  // Generate synthetic in-browser tone for quick testing without file
-  const generateSampleTone = () => {
-    const sr = 22050;
-    const duration = 3.0;
-    const numSamples = sr * duration;
+  // Helper to generate a standardized WAV Blob
+  const buildWavBlob = (samples: Float32Array, sr: number = 22050): Blob => {
+    const numSamples = samples.length;
     const buffer = new ArrayBuffer(44 + numSamples * 2);
     const view = new DataView(buffer);
-
-    // Write WAV header
-    const writeString = (offset: number, str: string) => {
-      for (let i = 0; i < str.length; i++) view.setUint8(offset + i, str.charCodeAt(i));
+    const writeStr = (offset: number, s: string) => {
+      for (let i = 0; i < s.length; i++) view.setUint8(offset + i, s.charCodeAt(i));
     };
-    writeString(0, "RIFF");
+    writeStr(0, "RIFF");
     view.setUint32(4, 36 + numSamples * 2, true);
-    writeString(8, "WAVE");
-    writeString(12, "fmt ");
+    writeStr(8, "WAVE");
+    writeStr(12, "fmt ");
     view.setUint32(16, 16, true);
     view.setUint16(20, 1, true); // PCM
     view.setUint16(22, 1, true); // Mono
@@ -206,23 +202,73 @@ export default function App() {
     view.setUint32(28, sr * 2, true);
     view.setUint16(32, 2, true);
     view.setUint16(34, 16, true);
-    writeString(36, "data");
+    writeStr(36, "data");
     view.setUint32(40, numSamples * 2, true);
 
-    // Siren-like synthetic acoustic tone (dual frequency sweep)
     for (let i = 0; i < numSamples; i++) {
-      const t = i / sr;
-      const freq = 600 + 300 * Math.sin(2 * Math.PI * 1.5 * t);
-      const sample = Math.sin(2 * Math.PI * freq * t) * 0.6 * 32767;
-      view.setInt16(44 + i * 2, Math.max(-32768, Math.min(32767, sample)), true);
+      const s = Math.max(-1.0, Math.min(1.0, samples[i]));
+      view.setInt16(44 + i * 2, s < 0 ? s * 32768 : s * 32767, true);
+    }
+    return new Blob([buffer], { type: "audio/wav" });
+  };
+
+  // Generate synthetic in-browser acoustic samples for zero-friction testing
+  const generateSamplePreset = (
+    preset: "siren" | "car_horn" | "engine_idling" | "jackhammer",
+    targetTab: "analyze" | "robustness" = "analyze"
+  ) => {
+    const sr = 22050;
+    const duration = 3.5;
+    const numSamples = Math.floor(sr * duration);
+    const samples = new Float32Array(numSamples);
+
+    if (preset === "siren") {
+      for (let i = 0; i < numSamples; i++) {
+        const t = i / sr;
+        const freq = 650 + 350 * Math.sin(2 * Math.PI * 1.2 * t);
+        samples[i] = 0.6 * Math.sin(2 * Math.PI * freq * t);
+      }
+    } else if (preset === "car_horn") {
+      for (let i = 0; i < numSamples; i++) {
+        const t = i / sr;
+        const burst = (t % 1.2 < 0.8) ? 1.0 : 0.05;
+        samples[i] = 0.35 * burst * (Math.sin(2 * Math.PI * 440 * t) + 0.8 * Math.sin(2 * Math.PI * 554 * t));
+      }
+    } else if (preset === "engine_idling") {
+      for (let i = 0; i < numSamples; i++) {
+        const t = i / sr;
+        const rumble = 0.5 * Math.sin(2 * Math.PI * 62 * t) + 0.3 * Math.sin(2 * Math.PI * 124 * t);
+        const noise = (Math.random() * 2 - 1) * 0.15;
+        samples[i] = 0.7 * (rumble + noise);
+      }
+    } else if (preset === "jackhammer") {
+      for (let i = 0; i < numSamples; i++) {
+        const t = i / sr;
+        const phase = (t * 18) % 1.0;
+        const strikeEnv = Math.exp(-phase * 15.0);
+        const metallic = Math.sin(2 * Math.PI * 380 * t) + 0.5 * Math.sin(2 * Math.PI * 820 * t);
+        const impactNoise = (Math.random() * 2 - 1) * 0.5;
+        samples[i] = 0.8 * strikeEnv * (metallic + impactNoise);
+      }
     }
 
-    const blob = new Blob([buffer], { type: "audio/wav" });
-    const sampleFile = new File([blob], "synthetic_siren_sample.wav", { type: "audio/wav" });
-    setSelectedFile(sampleFile);
-    setAudioUrl(URL.createObjectURL(blob));
-    setPrediction(null);
-    setAnalysisError(null);
+    const filename = `synthetic_${preset}_sample.wav`;
+    const blob = buildWavBlob(samples, sr);
+    const file = new File([blob], filename, { type: "audio/wav" });
+    const url = URL.createObjectURL(blob);
+
+    if (targetTab === "robustness") {
+      setRobFile(file);
+      setRobAudioUrl(url);
+      setRobustnessResult(null);
+      setRobError(null);
+    } else {
+      setSelectedFile(file);
+      setAudioUrl(url);
+      setPrediction(null);
+      setAnalysisError(null);
+      setIsPlaying(false);
+    }
   };
 
   // 4. Submit Audio Prediction Request
@@ -394,6 +440,28 @@ export default function App() {
 
       {/* Main View Area */}
       <main className="flex-1 max-w-7xl w-full mx-auto p-6 md:p-8 space-y-6">
+        {/* Offline Helper Banner */}
+        {!backendOnline && !loadingHealth && (
+          <div className="p-4 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-amber-300 text-xs flex items-center justify-between shadow-lg">
+            <div className="flex items-center space-x-2.5">
+              <AlertTriangle className="w-5 h-5 text-amber-400 shrink-0" />
+              <span>
+                <strong>FastAPI Backend is currently offline.</strong> Start both backend and frontend by running{" "}
+                <code className="bg-slate-900 px-2 py-0.5 rounded text-amber-200 font-mono border border-slate-800">
+                  python run.py
+                </code>{" "}
+                in your terminal.
+              </span>
+            </div>
+            <button
+              onClick={checkHealth}
+              className="px-3 py-1.5 rounded-lg bg-amber-500/20 hover:bg-amber-500/30 text-amber-200 font-medium transition text-xs shrink-0"
+            >
+              Retry Connection
+            </button>
+          </div>
+        )}
+
         {/* ==================================================== */}
         {/* TAB 1: AUDIO ANALYSIS & PREDICTION                   */}
         {/* ==================================================== */}
@@ -413,13 +481,38 @@ export default function App() {
                 </p>
               </div>
 
-              <div className="flex items-center space-x-2">
-                <button
-                  onClick={generateSampleTone}
-                  className="flex items-center space-x-1.5 px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-700/80 transition"
-                >
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="text-xs text-slate-400 font-medium flex items-center space-x-1">
                   <Sparkles className="w-3.5 h-3.5 text-amber-400" />
-                  <span>Generate Test Siren</span>
+                  <span>Try Sample:</span>
+                </span>
+                <button
+                  type="button"
+                  onClick={() => generateSamplePreset("siren", "analyze")}
+                  className="px-2.5 py-1.5 rounded-lg text-xs font-medium bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-700/80 hover:border-brand-500/50 transition flex items-center space-x-1"
+                >
+                  <span>🚨 Siren</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => generateSamplePreset("car_horn", "analyze")}
+                  className="px-2.5 py-1.5 rounded-lg text-xs font-medium bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-700/80 hover:border-brand-500/50 transition flex items-center space-x-1"
+                >
+                  <span>🚗 Car Horn</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => generateSamplePreset("engine_idling", "analyze")}
+                  className="px-2.5 py-1.5 rounded-lg text-xs font-medium bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-700/80 hover:border-brand-500/50 transition flex items-center space-x-1"
+                >
+                  <span>🚚 Engine</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => generateSamplePreset("jackhammer", "analyze")}
+                  className="px-2.5 py-1.5 rounded-lg text-xs font-medium bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-700/80 hover:border-brand-500/50 transition flex items-center space-x-1"
+                >
+                  <span>🔨 Jackhammer</span>
                 </button>
               </div>
             </div>
@@ -817,7 +910,17 @@ export default function App() {
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 {/* Audio Source */}
                 <div>
-                  <label className="text-xs text-slate-300 font-medium block mb-1.5">Audio Source</label>
+                  <div className="flex items-center justify-between mb-1.5">
+                    <label className="text-xs text-slate-300 font-medium">Audio Source</label>
+                    <button
+                      type="button"
+                      onClick={() => generateSamplePreset("siren", "robustness")}
+                      className="text-[11px] text-sky-400 hover:text-sky-300 flex items-center space-x-1 transition font-medium"
+                    >
+                      <Sparkles className="w-3 h-3 text-amber-400" />
+                      <span>Use Test Siren</span>
+                    </button>
+                  </div>
                   <label className="border border-slate-700/80 hover:border-sky-500/50 rounded-xl p-3 flex items-center space-x-3 cursor-pointer bg-slate-900/60 transition">
                     <Upload className="w-5 h-5 text-sky-400" />
                     <span className="text-xs text-slate-300 truncate">
