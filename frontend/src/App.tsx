@@ -1,26 +1,24 @@
 import React, { useState, useEffect, useRef } from "react";
 import {
-  ShieldCheck,
   Activity,
-  Cpu,
-  FileAudio,
-  FlaskConical,
-  BarChart3,
-  Info,
-  Volume2,
-  AlertTriangle,
-  CheckCircle2,
-  RefreshCw,
   Sliders,
   Sparkles,
   Upload,
   Play,
   Pause,
-  ExternalLink,
-  ChevronRight,
-  TrendingDown,
+  AlertTriangle,
+  RefreshCw,
+  SlidersHorizontal,
+  Volume2,
+  Cpu,
   Layers,
   HelpCircle,
+  TrendingDown,
+  Maximize2,
+  CheckCircle2,
+  ChevronRight,
+  Terminal,
+  Zap,
 } from "lucide-react";
 
 // ==========================================
@@ -103,17 +101,16 @@ export default function App() {
   const [robustnessResult, setRobustnessResult] = useState<RobustnessData | null>(null);
   const [robError, setRobError] = useState<string | null>(null);
 
-  // Research Metrics State
-  const [metricsData, setMetricsData] = useState<any>(null);
+  // Metrics & Model Info
+  const [metricsData, setMetricsData] = useState<any | null>(null);
   const [loadingMetrics, setLoadingMetrics] = useState<boolean>(false);
-
-  // Model Info State
-  const [modelInfo, setModelInfo] = useState<any>(null);
+  const [modelInfo, setModelInfo] = useState<any | null>(null);
   const [loadingModelInfo, setLoadingModelInfo] = useState<boolean>(false);
 
   // Audio Player State
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
+  const audioSectionRef = useRef<HTMLDivElement | null>(null);
 
   // 1. Fetch Backend Health Telemetry
   const checkHealth = async () => {
@@ -140,7 +137,7 @@ export default function App() {
     return () => clearInterval(interval);
   }, []);
 
-  // 2. Fetch Research Metrics on Tab Switch
+  // 2. Fetch Metrics on Tab Switch
   useEffect(() => {
     if (activeTab === "research" && !metricsData) {
       setLoadingMetrics(true);
@@ -231,7 +228,7 @@ export default function App() {
     } else if (preset === "car_horn") {
       for (let i = 0; i < numSamples; i++) {
         const t = i / sr;
-        const burst = (t % 1.2 < 0.8) ? 1.0 : 0.05;
+        const burst = t % 1.2 < 0.8 ? 1.0 : 0.05;
         samples[i] = 0.35 * burst * (Math.sin(2 * Math.PI * 440 * t) + 0.8 * Math.sin(2 * Math.PI * 554 * t));
       }
     } else if (preset === "engine_idling") {
@@ -345,91 +342,93 @@ export default function App() {
     }
   };
 
+  const scrollToAudioSection = () => {
+    audioSectionRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
   return (
-    <div className="min-h-screen flex flex-col font-sans">
-      {/* Top Navigation & Telemetry Bar */}
-      <header className="sticky top-0 z-50 glass-panel border-b border-slate-800/80 px-6 py-3.5 backdrop-blur-xl">
-        <div className="max-w-7xl mx-auto flex items-center justify-between">
-          {/* Logo & App Branding */}
+    <div className="min-h-screen flex flex-col font-sans bg-[#101820] text-[#F4F0E8] antialiased">
+      {/* Top Console Navigation & Telemetry Bar */}
+      <header className="sticky top-0 z-50 bg-[#101820]/95 border-b border-[#202A33] px-4 md:px-8 py-3 backdrop-blur-md">
+        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+          {/* Brand & Technical Engine Badge */}
           <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-600 to-sky-500 flex items-center justify-center shadow-lg shadow-brand-500/20 border border-brand-400/30">
-              <ShieldCheck className="w-6 h-6 text-white" />
+            <div className="w-8 h-8 bg-[#C7F464] text-[#101820] flex items-center justify-center font-display font-bold text-base shadow-sharp-lime">
+              AG
             </div>
             <div>
               <div className="flex items-center space-x-2">
-                <span className="font-bold text-lg tracking-tight text-white">AcoustiGuard AI</span>
-                <span className="px-2 py-0.5 text-xs font-mono font-medium rounded-full bg-brand-500/10 text-brand-400 border border-brand-500/20">
+                <span className="font-display font-bold text-lg tracking-tight text-[#F4F0E8]">
+                  AcoustiGuard AI
+                </span>
+                <span className="px-1.5 py-0.5 text-[10px] font-mono font-medium bg-[#202A33] text-[#C7F464] border border-[#202A33]">
                   UrbanSound8K
                 </span>
               </div>
-              <p className="text-xs text-slate-400 hidden sm:block">
-                Noise-Robust Environmental Audio Classification &amp; Confidence-Aware Inference
+              <p className="text-[11px] text-[#64748B] hidden sm:block font-mono tracking-tight">
+                Noise-Robust Environmental Audio Classification
               </p>
             </div>
           </div>
 
-          {/* Navigation Tabs */}
-          <nav className="flex items-center space-x-1 bg-slate-900/80 p-1 rounded-xl border border-slate-800">
+          {/* Console Navigation Tabs */}
+          <nav className="flex items-center space-x-1 bg-[#141e28] p-1 border border-[#202A33]">
             <button
               onClick={() => setActiveTab("analyze")}
-              className={`flex items-center space-x-1.5 px-3.5 py-1.5 rounded-lg text-xs font-medium transition-all ${
+              className={`px-3 py-1.5 text-xs font-mono font-medium transition-all ${
                 activeTab === "analyze"
-                  ? "bg-brand-600 text-white shadow-md shadow-brand-600/30 font-semibold"
-                  : "text-slate-400 hover:text-slate-200 hover:bg-slate-800/50"
+                  ? "bg-[#C7F464] text-[#101820] font-bold shadow-sm"
+                  : "text-[#ded7c8] hover:text-white hover:bg-[#202A33]"
               }`}
             >
-              <FileAudio className="w-3.5 h-3.5" />
-              <span>Audio Analysis</span>
+              [ 01 // Audio Analysis ]
             </button>
 
             <button
               onClick={() => setActiveTab("robustness")}
-              className={`flex items-center space-x-1.5 px-3.5 py-1.5 rounded-lg text-xs font-medium transition-all ${
+              className={`px-3 py-1.5 text-xs font-mono font-medium transition-all ${
                 activeTab === "robustness"
-                  ? "bg-brand-600 text-white shadow-md shadow-brand-600/30 font-semibold"
-                  : "text-slate-400 hover:text-slate-200 hover:bg-slate-800/50"
+                  ? "bg-[#C7F464] text-[#101820] font-bold shadow-sm"
+                  : "text-[#ded7c8] hover:text-white hover:bg-[#202A33]"
               }`}
             >
-              <FlaskConical className="w-3.5 h-3.5" />
-              <span>Robustness Lab</span>
+              [ 02 // Robustness Lab ]
             </button>
 
             <button
               onClick={() => setActiveTab("research")}
-              className={`flex items-center space-x-1.5 px-3.5 py-1.5 rounded-lg text-xs font-medium transition-all ${
+              className={`px-3 py-1.5 text-xs font-mono font-medium transition-all ${
                 activeTab === "research"
-                  ? "bg-brand-600 text-white shadow-md shadow-brand-600/30 font-semibold"
-                  : "text-slate-400 hover:text-slate-200 hover:bg-slate-800/50"
+                  ? "bg-[#C7F464] text-[#101820] font-bold shadow-sm"
+                  : "text-[#ded7c8] hover:text-white hover:bg-[#202A33]"
               }`}
             >
-              <BarChart3 className="w-3.5 h-3.5" />
-              <span>Performance Analytics</span>
+              [ 03 // Performance Analytics ]
             </button>
 
             <button
               onClick={() => setActiveTab("model_info")}
-              className={`flex items-center space-x-1.5 px-3.5 py-1.5 rounded-lg text-xs font-medium transition-all ${
+              className={`px-3 py-1.5 text-xs font-mono font-medium transition-all ${
                 activeTab === "model_info"
-                  ? "bg-brand-600 text-white shadow-md shadow-brand-600/30 font-semibold"
-                  : "text-slate-400 hover:text-slate-200 hover:bg-slate-800/50"
+                  ? "bg-[#C7F464] text-[#101820] font-bold shadow-sm"
+                  : "text-[#ded7c8] hover:text-white hover:bg-[#202A33]"
               }`}
             >
-              <Info className="w-3.5 h-3.5" />
-              <span>Model & Taxonomy</span>
+              [ 04 // Model &amp; Taxonomy ]
             </button>
           </nav>
 
-          {/* Backend Status Telemetry Indicator */}
+          {/* Telemetry Hardware Indicator */}
           <div className="flex items-center space-x-2">
-            <div className="flex items-center space-x-1.5 px-2.5 py-1 rounded-full bg-slate-900 border border-slate-800 text-xs font-mono">
+            <div className="flex items-center space-x-2 px-2.5 py-1 bg-[#141e28] border border-[#202A33] text-[11px] font-mono">
               <span
-                className={`w-2 h-2 rounded-full ${
-                  backendOnline ? "bg-emerald-500 animate-pulse" : "bg-rose-500"
+                className={`w-2 h-2 ${
+                  backendOnline ? "bg-[#C7F464] animate-pulse" : "bg-[#FF6B35]"
                 }`}
               />
-              <span className="text-slate-300">{backendOnline ? "API Online" : "Offline"}</span>
+              <span className="text-[#F4F0E8]">{backendOnline ? "ENGINE ONLINE" : "OFFLINE"}</span>
               {health?.device && (
-                <span className="text-slate-500 border-l border-slate-800 pl-1.5 uppercase">
+                <span className="text-[#64748B] border-l border-[#202A33] pl-2 uppercase font-bold">
                   {health.device}
                 </span>
               )}
@@ -438,26 +437,26 @@ export default function App() {
         </div>
       </header>
 
-      {/* Main View Area */}
-      <main className="flex-1 max-w-7xl w-full mx-auto p-6 md:p-8 space-y-6">
-        {/* Offline Helper Banner */}
+      {/* Main Container */}
+      <main className="flex-1 max-w-7xl w-full mx-auto p-4 md:p-8 space-y-8">
+        {/* Offline Warning Banner */}
         {!backendOnline && !loadingHealth && (
-          <div className="p-4 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-amber-300 text-xs flex items-center justify-between shadow-lg">
-            <div className="flex items-center space-x-2.5">
-              <AlertTriangle className="w-5 h-5 text-amber-400 shrink-0" />
+          <div className="p-4 bg-[#202A33] border-l-4 border-[#FF6B35] text-xs flex items-center justify-between">
+            <div className="flex items-center space-x-3">
+              <AlertTriangle className="w-5 h-5 text-[#FF6B35] shrink-0" />
               <span>
-                <strong>FastAPI Backend is currently offline.</strong> Start both backend and frontend by running{" "}
-                <code className="bg-slate-900 px-2 py-0.5 rounded text-amber-200 font-mono border border-slate-800">
+                <strong className="text-white">FastAPI Backend is currently offline.</strong> Run{" "}
+                <code className="bg-[#101820] px-2 py-0.5 text-[#C7F464] font-mono border border-[#202A33]">
                   python run.py
                 </code>{" "}
-                in your terminal.
+                to start both servers.
               </span>
             </div>
             <button
               onClick={checkHealth}
-              className="px-3 py-1.5 rounded-lg bg-amber-500/20 hover:bg-amber-500/30 text-amber-200 font-medium transition text-xs shrink-0"
+              className="px-3 py-1 bg-[#FF6B35] hover:bg-[#f35a22] text-white font-mono text-xs font-bold transition shrink-0"
             >
-              Retry Connection
+              RETRY
             </button>
           </div>
         )}
@@ -466,464 +465,571 @@ export default function App() {
         {/* TAB 1: AUDIO ANALYSIS & PREDICTION                   */}
         {/* ==================================================== */}
         {activeTab === "analyze" && (
-          <div className="space-y-6">
-            {/* Header intro */}
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-              <div>
-                <h1 className="text-2xl font-bold tracking-tight text-white flex items-center space-x-2">
-                  <span>Environmental Sound Classifier</span>
-                  <span className="text-xs font-normal text-indigo-400 bg-indigo-500/10 px-2.5 py-0.5 rounded-md border border-indigo-500/20">
-                    Confidence-Aware
-                  </span>
-                </h1>
-                <p className="text-sm text-slate-400 mt-1">
-                  Upload an urban environmental audio recording to analyze its spectrogram, predict sound category, and detect uncertainty.
-                </p>
-              </div>
+          <div className="space-y-8">
+            {/* HERO SECTION: Asymmetric Editorial Soundwave Display */}
+            <div className="border border-[#202A33] bg-[#141e28] p-6 md:p-10 relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-[#C7F464]/5 to-transparent pointer-events-none" />
 
-              <div className="flex flex-wrap items-center gap-2">
-                <span className="text-xs text-slate-400 font-medium flex items-center space-x-1">
-                  <Sparkles className="w-3.5 h-3.5 text-amber-400" />
-                  <span>Try Sample:</span>
-                </span>
-                <button
-                  type="button"
-                  onClick={() => generateSamplePreset("siren", "analyze")}
-                  className="px-2.5 py-1.5 rounded-lg text-xs font-medium bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-700/80 hover:border-brand-500/50 transition flex items-center space-x-1"
-                >
-                  <span>🚨 Siren</span>
-                </button>
-                <button
-                  type="button"
-                  onClick={() => generateSamplePreset("car_horn", "analyze")}
-                  className="px-2.5 py-1.5 rounded-lg text-xs font-medium bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-700/80 hover:border-brand-500/50 transition flex items-center space-x-1"
-                >
-                  <span>🚗 Car Horn</span>
-                </button>
-                <button
-                  type="button"
-                  onClick={() => generateSamplePreset("engine_idling", "analyze")}
-                  className="px-2.5 py-1.5 rounded-lg text-xs font-medium bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-700/80 hover:border-brand-500/50 transition flex items-center space-x-1"
-                >
-                  <span>🚚 Engine</span>
-                </button>
-                <button
-                  type="button"
-                  onClick={() => generateSamplePreset("jackhammer", "analyze")}
-                  className="px-2.5 py-1.5 rounded-lg text-xs font-medium bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-700/80 hover:border-brand-500/50 transition flex items-center space-x-1"
-                >
-                  <span>🔨 Jackhammer</span>
-                </button>
-              </div>
-            </div>
-
-            {/* Grid: Audio Input & Controls + Results */}
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-              {/* Left Column: Upload, Player, Parameters (5 cols) */}
-              <div className="lg:col-span-5 space-y-6">
-                {/* Upload Card */}
-                <div className="glass-panel p-5 rounded-2xl space-y-4">
-                  <div className="flex items-center justify-between">
-                    <h2 className="text-sm font-semibold text-white flex items-center space-x-2">
-                      <FileAudio className="w-4 h-4 text-brand-400" />
-                      <span>Audio Input</span>
-                    </h2>
-                    {selectedFile && (
-                      <span className="text-xs text-slate-400 truncate max-w-[160px] font-mono">
-                        {selectedFile.name}
-                      </span>
-                    )}
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center relative z-10">
+                {/* Left Column: Bold Typography & Action */}
+                <div className="lg:col-span-7 space-y-5">
+                  <div className="flex flex-wrap items-center gap-2">
+                    <span className="px-2 py-0.5 text-[10px] font-mono uppercase tracking-wider bg-[#202A33] text-[#C7F464] border border-[#202A33]">
+                      AUDIO INTELLIGENCE
+                    </span>
+                    <span className="px-2 py-0.5 text-[10px] font-mono uppercase tracking-wider bg-[#202A33] text-[#F4F0E8] border border-[#202A33]">
+                      10 SOUND CLASSES
+                    </span>
+                    <span className="px-2 py-0.5 text-[10px] font-mono uppercase tracking-wider bg-[#202A33] text-[#FF6B35] border border-[#202A33]">
+                      NOISE ROBUSTNESS
+                    </span>
                   </div>
 
-                  <label
-                    htmlFor="audio-upload"
-                    className="border-2 border-dashed border-slate-700/80 hover:border-brand-500/50 rounded-xl p-6 flex flex-col items-center justify-center text-center cursor-pointer transition-colors bg-slate-900/40 hover:bg-slate-900/70 group"
-                  >
-                    <Upload className="w-8 h-8 text-slate-500 group-hover:text-brand-400 transition mb-2" />
-                    <span className="text-sm font-medium text-slate-300 group-hover:text-white">
-                      Click to choose audio or drop file
+                  <h1 className="text-4xl md:text-5xl lg:text-6xl font-display font-bold tracking-tight text-[#F4F0E8] leading-[1.05]">
+                    Every Sound <br />
+                    <span className="text-[#C7F464] underline decoration-2 underline-offset-8">
+                      Has a Story.
                     </span>
-                    <span className="text-xs text-slate-500 mt-1">
-                      WAV, MP3, FLAC, OGG (Up to 4.0s @ 22,050 Hz)
-                    </span>
-                    <input
-                      id="audio-upload"
-                      type="file"
-                      accept=".wav,.mp3,.flac,.ogg,audio/*"
-                      onChange={handleFileChange}
-                      className="hidden"
-                    />
-                  </label>
+                  </h1>
 
-                  {/* Audio Player if file loaded */}
-                  {audioUrl && (
-                    <div className="p-3 rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-between">
-                      <div className="flex items-center space-x-3">
-                        <button
-                          onClick={toggleAudio}
-                          className="w-8 h-8 rounded-full bg-brand-600 hover:bg-brand-500 text-white flex items-center justify-center transition shadow-md"
-                        >
-                          {isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4 ml-0.5" />}
-                        </button>
-                        <div className="text-xs">
-                          <p className="font-medium text-slate-200 truncate max-w-[180px]">
-                            {selectedFile?.name || "Uploaded Audio"}
-                          </p>
-                          <span className="text-slate-500 font-mono">Standardized 4.0s excerpt</span>
-                        </div>
-                      </div>
-                      <Volume2 className="w-4 h-4 text-slate-400" />
-                      <audio
-                        ref={audioRef}
-                        src={audioUrl}
-                        onEnded={() => setIsPlaying(false)}
-                        className="hidden"
-                      />
-                    </div>
-                  )}
+                  <p className="text-sm md:text-base text-[#ded7c8] max-w-xl leading-relaxed">
+                    AcoustiGuard AI decodes urban environmental acoustic signatures.
+                    Engineered with deep convolutional feature representation, multi-SNR noise tolerance, and
+                    temperature-calibrated confidence detection to reject degraded or ambiguous audio inputs.
+                  </p>
 
-                  {/* Inference Controls */}
-                  <div className="space-y-4 pt-2 border-t border-slate-800/80">
-                    <h3 className="text-xs font-semibold text-slate-400 uppercase tracking-wider flex items-center space-x-1.5">
-                      <Sliders className="w-3.5 h-3.5" />
-                      <span>Inference Parameters</span>
-                    </h3>
-
-                    {/* Model Selector */}
-                    <div>
-                      <label className="text-xs text-slate-300 block mb-1 font-medium">Model Variant</label>
-                      <div className="grid grid-cols-2 gap-2">
-                        <button
-                          type="button"
-                          onClick={() => setModelType("augmented")}
-                          className={`px-3 py-2 rounded-xl text-xs font-medium border text-left transition ${
-                            modelType === "augmented"
-                              ? "bg-brand-500/10 border-brand-500/50 text-brand-300 shadow-sm"
-                              : "bg-slate-900 border-slate-800 text-slate-400 hover:text-slate-300"
-                          }`}
-                        >
-                          <div className="font-semibold text-white">Noise-Augmented</div>
-                          <div className="text-[11px] text-slate-400">Trained with noise defense</div>
-                        </button>
-
-                        <button
-                          type="button"
-                          onClick={() => setModelType("baseline")}
-                          className={`px-3 py-2 rounded-xl text-xs font-medium border text-left transition ${
-                            modelType === "baseline"
-                              ? "bg-brand-500/10 border-brand-500/50 text-brand-300 shadow-sm"
-                              : "bg-slate-900 border-slate-800 text-slate-400 hover:text-slate-300"
-                          }`}
-                        >
-                          <div className="font-semibold text-white">Baseline CNN</div>
-                          <div className="text-[11px] text-slate-400">Clean audio training only</div>
-                        </button>
-                      </div>
-                    </div>
-
-                    {/* Threshold Slider */}
-                    <div>
-                      <div className="flex justify-between text-xs mb-1">
-                        <span className="text-slate-300 font-medium">Uncertainty Rejection Threshold (&tau;)</span>
-                        <span className="font-mono text-brand-400 font-bold">{(threshold * 100).toFixed(0)}%</span>
-                      </div>
-                      <input
-                        type="range"
-                        min="0.5"
-                        max="0.95"
-                        step="0.05"
-                        value={threshold}
-                        onChange={(e) => setThreshold(parseFloat(e.target.value))}
-                        className="w-full accent-brand-500 bg-slate-800 rounded-lg h-2 cursor-pointer"
-                      />
-                      <div className="flex justify-between text-[10px] text-slate-500 mt-1 font-mono">
-                        <span>50% (Permissive)</span>
-                        <span>70% (Default)</span>
-                        <span>95% (Conservative)</span>
-                      </div>
-                    </div>
-
-                    {/* Temperature Scaling Toggle */}
-                    <div className="flex items-center justify-between p-2.5 rounded-xl bg-slate-900/60 border border-slate-800 text-xs">
-                      <div>
-                        <div className="font-medium text-slate-200">Temperature Scaling</div>
-                        <div className="text-[11px] text-slate-500">Post-hoc confidence calibration</div>
-                      </div>
-                      <button
-                        type="button"
-                        onClick={() => setUseCalibration(!useCalibration)}
-                        className={`w-10 h-5 rounded-full transition-colors relative ${
-                          useCalibration ? "bg-brand-600" : "bg-slate-700"
-                        }`}
-                      >
-                        <span
-                          className={`w-3.5 h-3.5 rounded-full bg-white absolute top-0.75 transition-transform ${
-                            useCalibration ? "left-5.5" : "left-1"
-                          }`}
-                        />
-                      </button>
-                    </div>
-
-                    {/* Run Classification Button */}
+                  <div className="flex flex-wrap items-center gap-4 pt-2">
                     <button
-                      disabled={!selectedFile || isAnalyzing}
-                      onClick={handleAnalyze}
-                      className="w-full py-3 rounded-xl font-semibold text-sm bg-gradient-to-r from-brand-600 to-indigo-600 hover:from-brand-500 hover:to-indigo-500 text-white shadow-lg shadow-brand-600/25 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2 transition"
+                      onClick={scrollToAudioSection}
+                      className="px-6 py-3 bg-[#C7F464] hover:bg-[#b6e94e] text-[#101820] font-display font-bold text-sm tracking-wide transition shadow-sharp-lime flex items-center space-x-2"
                     >
-                      {isAnalyzing ? (
-                        <>
-                          <RefreshCw className="w-4 h-4 animate-spin" />
-                          <span>Classifying Audio...</span>
-                        </>
-                      ) : (
-                        <>
-                          <Activity className="w-4 h-4" />
-                          <span>Classify Environmental Sound</span>
-                        </>
-                      )}
+                      <Zap className="w-4 h-4 fill-current" />
+                      <span>Analyze Audio</span>
                     </button>
 
-                    {analysisError && (
-                      <div className="p-3 rounded-xl bg-rose-500/10 border border-rose-500/30 text-rose-400 text-xs flex items-start space-x-2">
-                        <AlertTriangle className="w-4 h-4 shrink-0 mt-0.5" />
-                        <span>{analysisError}</span>
-                      </div>
-                    )}
+                    <div className="flex items-center space-x-2 text-xs font-mono text-[#64748B] border border-[#202A33] px-3 py-2 bg-[#101820]">
+                      <Terminal className="w-3.5 h-3.5 text-[#C7F464]" />
+                      <span>22,050 Hz &bull; 128 Mel Bins &bull; 88,200 Samples</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Right Column: Decorative Geometric Soundwave & Frequency Spectrum */}
+                <div className="lg:col-span-5 border border-[#202A33] bg-[#101820] p-6 space-y-4">
+                  <div className="flex items-center justify-between text-xs font-mono text-[#64748B] border-b border-[#202A33] pb-2">
+                    <span>LIVE SPECTRUM VISUALIZER</span>
+                    <span className="text-[#C7F464]">CH 01 / DUAL-BAND</span>
+                  </div>
+
+                  {/* Frequency Bars Graphic */}
+                  <div className="h-36 flex items-end justify-between gap-1 px-2 pt-4">
+                    {[
+                      25, 40, 65, 80, 50, 95, 75, 45, 85, 90, 60, 35, 70, 85, 100, 75, 50, 90, 65, 40, 80, 60,
+                      45, 70, 90, 55, 30, 85, 65, 40, 50, 75,
+                    ].map((heightPct, idx) => (
+                      <div
+                        key={idx}
+                        className={`w-full transition-all duration-300 ${
+                          idx % 3 === 0
+                            ? "bg-[#C7F464]"
+                            : idx % 5 === 0
+                            ? "bg-[#FF6B35]"
+                            : "bg-[#25313c] hover:bg-[#64748B]"
+                        }`}
+                        style={{ height: `${heightPct}%` }}
+                      />
+                    ))}
+                  </div>
+
+                  <div className="grid grid-cols-3 gap-2 pt-2 border-t border-[#202A33] text-[10px] font-mono">
+                    <div className="text-center p-1.5 bg-[#141e28] border border-[#202A33]">
+                      <div className="text-[#64748B]">LATENCY</div>
+                      <div className="text-[#F4F0E8] font-bold mt-0.5">~13.4 ms</div>
+                    </div>
+                    <div className="text-center p-1.5 bg-[#141e28] border border-[#202A33]">
+                      <div className="text-[#64748B]">PARAMS</div>
+                      <div className="text-[#F4F0E8] font-bold mt-0.5">767.7 K</div>
+                    </div>
+                    <div className="text-center p-1.5 bg-[#141e28] border border-[#202A33]">
+                      <div className="text-[#64748B]">CHECKPOINT</div>
+                      <div className="text-[#C7F464] font-bold mt-0.5">2.93 MB</div>
+                    </div>
                   </div>
                 </div>
               </div>
+            </div>
 
-              {/* Right Column: Prediction Results, Spectrogram & Probabilities (7 cols) */}
-              <div className="lg:col-span-7 space-y-6">
-                {prediction ? (
-                  <>
-                    {/* Primary Prediction Verdict Card */}
-                    <div
-                      className={`glass-panel p-6 rounded-2xl border transition-all ${
-                        prediction.is_uncertain
-                          ? "border-amber-500/40 bg-gradient-to-br from-slate-900/90 via-slate-900/80 to-amber-950/20"
-                          : "border-emerald-500/40 bg-gradient-to-br from-slate-900/90 via-slate-900/80 to-emerald-950/20"
-                      }`}
-                    >
-                      <div className="flex items-start justify-between">
-                        <div>
-                          <div className="flex items-center space-x-2 mb-1">
-                            <span className="text-xs font-mono uppercase tracking-wider text-slate-400">
-                              Classification Output
-                            </span>
-                            <span className="text-slate-600">•</span>
-                            <span className="text-xs font-mono text-slate-400">
-                              Latency: {prediction.inference_latency_ms.toFixed(1)} ms
-                            </span>
-                          </div>
-                          <h2 className="text-2xl font-extrabold text-white capitalize tracking-tight">
-                            {prediction.predicted_class_name.replace(/_/g, " ")}
-                          </h2>
-                        </div>
+            {/* SECTION 2: AUDIO INGESTION & CONTROLS */}
+            <div ref={audioSectionRef} className="space-y-6">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-[#202A33] pb-4">
+                <div>
+                  <h2 className="text-xl md:text-2xl font-display font-bold text-[#F4F0E8] flex items-center space-x-2">
+                    <span>Environmental Sound Classifier</span>
+                    <span className="text-[10px] font-mono px-2 py-0.5 bg-[#202A33] text-[#C7F464] border border-[#202A33]">
+                      Confidence-Aware
+                    </span>
+                  </h2>
+                  <p className="text-xs text-[#ded7c8] mt-1 font-mono">
+                    Upload an audio recording or select an acoustic preset to extract log-mel features and classify.
+                  </p>
+                </div>
 
-                        {/* Uncertainty Badge */}
-                        <div
-                          className={`px-3 py-1.5 rounded-full text-xs font-semibold flex items-center space-x-1.5 border shadow-sm ${
-                            prediction.is_uncertain
-                              ? "bg-amber-500/10 border-amber-500/30 text-amber-400"
-                              : "bg-emerald-500/10 border-emerald-500/30 text-emerald-400"
-                          }`}
-                        >
-                          {prediction.is_uncertain ? (
-                            <>
-                              <AlertTriangle className="w-4 h-4" />
-                              <span>Uncertain Prediction</span>
-                            </>
-                          ) : (
-                            <>
-                              <CheckCircle2 className="w-4 h-4" />
-                              <span>Reliable Prediction</span>
-                            </>
-                          )}
-                        </div>
-                      </div>
+                {/* Preset Chips */}
+                <div className="flex flex-wrap items-center gap-1.5">
+                  <span className="text-xs font-mono text-[#64748B] mr-1">PRESETS:</span>
+                  <button
+                    type="button"
+                    onClick={() => generateSamplePreset("siren", "analyze")}
+                    className="px-2.5 py-1 text-xs font-mono bg-[#141e28] hover:bg-[#202A33] text-[#F4F0E8] border border-[#202A33] hover:border-[#C7F464] transition"
+                  >
+                    🚨 SIREN
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => generateSamplePreset("car_horn", "analyze")}
+                    className="px-2.5 py-1 text-xs font-mono bg-[#141e28] hover:bg-[#202A33] text-[#F4F0E8] border border-[#202A33] hover:border-[#C7F464] transition"
+                  >
+                    🚗 HORN
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => generateSamplePreset("engine_idling", "analyze")}
+                    className="px-2.5 py-1 text-xs font-mono bg-[#141e28] hover:bg-[#202A33] text-[#F4F0E8] border border-[#202A33] hover:border-[#C7F464] transition"
+                  >
+                    🚚 ENGINE
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => generateSamplePreset("jackhammer", "analyze")}
+                    className="px-2.5 py-1 text-xs font-mono bg-[#141e28] hover:bg-[#202A33] text-[#F4F0E8] border border-[#202A33] hover:border-[#C7F464] transition"
+                  >
+                    🔨 JACKHAMMER
+                  </button>
+                </div>
+              </div>
 
-                      {/* Confidence Meter Bar */}
-                      <div className="mt-5 space-y-1.5">
-                        <div className="flex justify-between text-xs">
-                          <span className="text-slate-400">
-                            Model Confidence {prediction.calibrated ? "(Temperature Scaled)" : "(Raw)"}
-                          </span>
-                          <span className="font-mono font-bold text-white">
-                            {(prediction.confidence * 100).toFixed(1)}%
-                          </span>
-                        </div>
-                        <div className="w-full bg-slate-800 rounded-full h-2.5 overflow-hidden">
-                          <div
-                            className={`h-full transition-all duration-500 rounded-full ${
-                              prediction.is_uncertain
-                                ? "bg-amber-500"
-                                : "bg-gradient-to-r from-brand-500 to-emerald-500"
-                            }`}
-                            style={{ width: `${Math.min(100, prediction.confidence * 100)}%` }}
-                          />
-                        </div>
-                        <p className="text-xs text-slate-400 mt-2 italic">
-                          "{prediction.status_message}"
-                        </p>
-                      </div>
+              {/* Grid: Audio Input & Controls + Results */}
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                {/* Left Column: Upload & Parameters (5 cols) */}
+                <div className="lg:col-span-5 space-y-6">
+                  {/* Upload Card */}
+                  <div className="bg-[#141e28] border border-[#202A33] p-6 space-y-5 accent-edge-lime">
+                    <div className="flex items-center justify-between border-b border-[#202A33] pb-3">
+                      <h3 className="text-xs font-mono uppercase tracking-wider text-[#F4F0E8] flex items-center space-x-2">
+                        <span className="text-[#C7F464] font-bold">01 //</span>
+                        <span>Audio Input</span>
+                      </h3>
+                      {selectedFile && (
+                        <span className="text-xs font-mono text-[#C7F464] truncate max-w-[180px]">
+                          {selectedFile.name}
+                        </span>
+                      )}
                     </div>
 
-                    {/* Acoustic Feature Visualizer (Waveform & Spectrogram Preview) */}
-                    <div className="glass-panel p-5 rounded-2xl space-y-4">
-                      <div className="flex items-center justify-between">
-                        <h3 className="text-sm font-semibold text-white flex items-center space-x-2">
-                          <Activity className="w-4 h-4 text-sky-400" />
-                          <span>Extracted Acoustic Features</span>
-                        </h3>
-                        <span className="text-xs text-slate-500 font-mono">
-                          128 Mels &bull; 88,200 Samples
-                        </span>
+                    {/* Square Dropzone */}
+                    <label
+                      htmlFor="audio-upload"
+                      className="border-2 border-dashed border-[#202A33] hover:border-[#C7F464] p-8 flex flex-col items-center justify-center text-center cursor-pointer transition-colors bg-[#101820] hover:bg-[#15202b] group relative"
+                    >
+                      <div className="w-12 h-12 bg-[#202A33] group-hover:bg-[#C7F464] text-[#C7F464] group-hover:text-[#101820] flex items-center justify-center mb-3 transition">
+                        <Upload className="w-6 h-6" />
+                      </div>
+                      <span className="text-sm font-display font-bold text-[#F4F0E8] group-hover:text-[#C7F464]">
+                        Click to choose audio or drop file
+                      </span>
+                      <span className="text-xs font-mono text-[#64748B] mt-1.5">
+                        WAV, MP3, FLAC, OGG &bull; Up to 4.0s @ 22.05 kHz
+                      </span>
+                      <input
+                        id="audio-upload"
+                        type="file"
+                        accept=".wav,.mp3,.flac,.ogg,audio/*"
+                        onChange={handleFileChange}
+                        className="hidden"
+                      />
+                    </label>
+
+                    {/* Audio Player if file loaded */}
+                    {audioUrl && (
+                      <div className="p-3 bg-[#101820] border border-[#202A33] flex items-center justify-between">
+                        <div className="flex items-center space-x-3">
+                          <button
+                            onClick={toggleAudio}
+                            className="w-9 h-9 bg-[#C7F464] hover:bg-[#b6e94e] text-[#101820] flex items-center justify-center font-bold transition shadow-sm"
+                          >
+                            {isPlaying ? <Pause className="w-4 h-4 fill-current" /> : <Play className="w-4 h-4 fill-current ml-0.5" />}
+                          </button>
+                          <div className="text-xs">
+                            <p className="font-mono text-[#F4F0E8] truncate max-w-[200px]">
+                              {selectedFile?.name || "Uploaded Audio"}
+                            </p>
+                            <span className="text-[10px] text-[#64748B] font-mono">22,050 Hz Mono &bull; Standardized</span>
+                          </div>
+                        </div>
+                        <Volume2 className="w-4 h-4 text-[#64748B]" />
+                        <audio
+                          ref={audioRef}
+                          src={audioUrl}
+                          onEnded={() => setIsPlaying(false)}
+                          className="hidden"
+                        />
+                      </div>
+                    )}
+
+                    {/* Inference Parameters */}
+                    <div className="space-y-4 pt-3 border-t border-[#202A33]">
+                      <h4 className="text-xs font-mono uppercase tracking-wider text-[#64748B] flex items-center space-x-1.5">
+                        <SlidersHorizontal className="w-3.5 h-3.5" />
+                        <span>Inference Parameters</span>
+                      </h4>
+
+                      {/* Model Selector: Sharp Rectangular Buttons */}
+                      <div>
+                        <label className="text-xs font-mono text-[#ded7c8] block mb-1.5">MODEL VARIANT</label>
+                        <div className="grid grid-cols-2 gap-2">
+                          <button
+                            type="button"
+                            onClick={() => setModelType("augmented")}
+                            className={`p-3 text-left border transition ${
+                              modelType === "augmented"
+                                ? "bg-[#101820] border-[#C7F464] shadow-sharp-lime"
+                                : "bg-[#101820] border-[#202A33] hover:border-[#64748B]"
+                            }`}
+                          >
+                            <div className={`font-display font-bold text-xs ${modelType === "augmented" ? "text-[#C7F464]" : "text-[#F4F0E8]"}`}>
+                              Noise-Augmented
+                            </div>
+                            <div className="text-[10px] font-mono text-[#64748B] mt-0.5">Trained with noise defense</div>
+                          </button>
+
+                          <button
+                            type="button"
+                            onClick={() => setModelType("baseline")}
+                            className={`p-3 text-left border transition ${
+                              modelType === "baseline"
+                                ? "bg-[#101820] border-[#C7F464] shadow-sharp-lime"
+                                : "bg-[#101820] border-[#202A33] hover:border-[#64748B]"
+                            }`}
+                          >
+                            <div className={`font-display font-bold text-xs ${modelType === "baseline" ? "text-[#C7F464]" : "text-[#F4F0E8]"}`}>
+                              Baseline CNN
+                            </div>
+                            <div className="text-[10px] font-mono text-[#64748B] mt-0.5">Clean audio training only</div>
+                          </button>
+                        </div>
                       </div>
 
-                      {/* Waveform Micro-Visualizer */}
+                      {/* Confidence Threshold Slider */}
                       <div>
-                        <div className="text-[11px] font-mono text-slate-400 mb-1">
-                          Standardized Audio Waveform (Envelope)
+                        <div className="flex justify-between text-xs font-mono mb-1.5">
+                          <span className="text-[#ded7c8]">CONFIDENCE THRESHOLD (&tau;)</span>
+                          <span className="text-[#C7F464] font-bold">{(threshold * 100).toFixed(0)}%</span>
                         </div>
-                        <div className="h-16 w-full bg-slate-950/80 rounded-xl p-2 border border-slate-800 flex items-center justify-between gap-0.5 overflow-hidden">
-                          {prediction.waveform_preview.map((val, idx) => {
-                            const barHeight = Math.max(4, Math.abs(val) * 55);
+                        <input
+                          type="range"
+                          min="0.50"
+                          max="0.95"
+                          step="0.05"
+                          value={threshold}
+                          onChange={(e) => setThreshold(parseFloat(e.target.value))}
+                          className="w-full h-2 cursor-pointer"
+                        />
+                        <div className="flex justify-between text-[10px] text-[#64748B] mt-1 font-mono">
+                          <span>50% (Permissive)</span>
+                          <span>70% (Default)</span>
+                          <span>95% (Strict)</span>
+                        </div>
+                      </div>
+
+                      {/* Temperature Scaling Toggle */}
+                      <div className="flex items-center justify-between p-3 bg-[#101820] border border-[#202A33] text-xs">
+                        <div>
+                          <div className="font-mono text-[#F4F0E8] font-bold">Temperature Calibration</div>
+                          <div className="text-[10px] font-mono text-[#64748B]">Post-hoc NLL calibration on validation fold</div>
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => setUseCalibration(!useCalibration)}
+                          className={`px-3 py-1 text-xs font-mono font-bold transition border ${
+                            useCalibration
+                              ? "bg-[#C7F464] text-[#101820] border-[#C7F464]"
+                              : "bg-[#202A33] text-[#64748B] border-[#202A33]"
+                          }`}
+                        >
+                          {useCalibration ? "ENABLED" : "BYPASS"}
+                        </button>
+                      </div>
+
+                      {/* Action Button: Rectangular Sharp Electric Lime */}
+                      <button
+                        disabled={!selectedFile || isAnalyzing}
+                        onClick={handleAnalyze}
+                        className="w-full py-3.5 bg-[#C7F464] hover:bg-[#b6e94e] text-[#101820] font-display font-bold text-sm tracking-wide shadow-sharp-lime disabled:opacity-40 disabled:cursor-not-allowed transition flex items-center justify-center space-x-2"
+                      >
+                        {isAnalyzing ? (
+                          <>
+                            <RefreshCw className="w-4 h-4 animate-spin" />
+                            <span>Processing Audio Features...</span>
+                          </>
+                        ) : (
+                          <>
+                            <Activity className="w-4 h-4" />
+                            <span>Classify Environmental Sound</span>
+                          </>
+                        )}
+                      </button>
+
+                      {analysisError && (
+                        <div className="p-3 bg-[#202A33] border-l-4 border-[#FF6B35] text-[#FF6B35] text-xs font-mono">
+                          {analysisError}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Right Column: Prediction Results & Spectrogram (7 cols) */}
+                <div className="lg:col-span-7 space-y-6">
+                  {prediction ? (
+                    <div className="space-y-6">
+                      {/* Prediction Hero Card */}
+                      <div className="bg-[#141e28] border border-[#202A33] p-6 relative overflow-hidden accent-edge-lime">
+                        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 border-b border-[#202A33] pb-4">
+                          <div>
+                            <span className="text-[10px] font-mono uppercase tracking-wider text-[#64748B]">
+                              IDENTIFIED CLASS [TARGET]
+                            </span>
+                            <h2 className="text-3xl md:text-4xl font-display font-bold text-[#F4F0E8] capitalize tracking-tight mt-1">
+                              {prediction.predicted_class_name.replace(/_/g, " ")}
+                            </h2>
+                          </div>
+
+                          <div className="flex items-center space-x-3">
+                            <div className="text-right">
+                              <span className="text-[10px] font-mono text-[#64748B]">CONFIDENCE</span>
+                              <div className="text-2xl font-mono font-bold text-[#C7F464]">
+                                {(prediction.confidence * 100).toFixed(1)}%
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Geometric Confidence Meter */}
+                        <div className="mt-4 space-y-1.5">
+                          <div className="flex justify-between text-[11px] font-mono text-[#64748B]">
+                            <span>Softmax Probability</span>
+                            <span>Threshold: {(prediction.threshold_applied * 100).toFixed(0)}%</span>
+                          </div>
+                          <div className="h-3 w-full bg-[#101820] border border-[#202A33] p-0.5">
+                            <div
+                              className="h-full bg-[#C7F464] transition-all duration-500"
+                              style={{ width: `${Math.min(100, prediction.confidence * 100)}%` }}
+                            />
+                          </div>
+                        </div>
+
+                        {/* Uncertainty Banner */}
+                        {prediction.is_uncertain ? (
+                          <div className="mt-4 p-3 bg-[#202A33] border-l-4 border-[#FF6B35] text-[#FF6B35] text-xs font-mono flex items-center justify-between">
+                            <div className="flex items-center space-x-2">
+                              <AlertTriangle className="w-4 h-4 shrink-0" />
+                              <span>{prediction.status_message}</span>
+                            </div>
+                            <span className="font-bold uppercase tracking-wider text-[10px] bg-[#101820] px-2 py-0.5 border border-[#FF6B35]">
+                              LOW CONFIDENCE
+                            </span>
+                          </div>
+                        ) : (
+                          <div className="mt-4 p-3 bg-[#202A33] border-l-4 border-[#C7F464] text-[#C7F464] text-xs font-mono flex items-center justify-between">
+                            <div className="flex items-center space-x-2">
+                              <CheckCircle2 className="w-4 h-4 shrink-0" />
+                              <span>{prediction.status_message}</span>
+                            </div>
+                            <span className="font-bold uppercase tracking-wider text-[10px] bg-[#101820] px-2 py-0.5 border border-[#C7F464]">
+                              CONFIDENT
+                            </span>
+                          </div>
+                        )}
+
+                        {/* Telemetry Micro-Grid */}
+                        <div className="grid grid-cols-3 gap-2 mt-4 pt-4 border-t border-[#202A33] text-[10px] font-mono">
+                          <div>
+                            <span className="text-[#64748B]">INFERENCE TIME</span>
+                            <div className="text-[#F4F0E8] font-bold mt-0.5">{prediction.inference_latency_ms.toFixed(1)} ms</div>
+                          </div>
+                          <div>
+                            <span className="text-[#64748B]">TEMPERATURE</span>
+                            <div className="text-[#F4F0E8] font-bold mt-0.5">T = {prediction.temperature.toFixed(3)}</div>
+                          </div>
+                          <div>
+                            <span className="text-[#64748B]">ARCHITECTURE</span>
+                            <div className="text-[#C7F464] font-bold mt-0.5">{prediction.model_used}</div>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Extracted Features: Waveform & Spectrogram */}
+                      <div className="bg-[#141e28] border border-[#202A33] p-6 space-y-4">
+                        <div className="flex items-center justify-between border-b border-[#202A33] pb-2">
+                          <h3 className="text-xs font-mono uppercase tracking-wider text-[#F4F0E8] flex items-center space-x-2">
+                            <span className="text-[#C7F464] font-bold">02 //</span>
+                            <span>Extracted Acoustic Features</span>
+                          </h3>
+                          <span className="text-[10px] font-mono text-[#64748B]">
+                            128 Mels &bull; 88,200 Samples
+                          </span>
+                        </div>
+
+                        {/* Waveform Micro-Visualizer */}
+                        <div>
+                          <div className="text-[10px] font-mono text-[#64748B] mb-1">
+                            NORMALIZED WAVEFORM ENVELOPE (TIME DOMAIN)
+                          </div>
+                          <div className="h-16 w-full bg-[#101820] p-1 border border-[#202A33] flex items-center justify-between gap-0.5 overflow-hidden">
+                            {prediction.waveform_preview.map((val, idx) => {
+                              const barHeight = Math.max(4, Math.abs(val) * 55);
+                              return (
+                                <div
+                                  key={idx}
+                                  className="w-full bg-[#C7F464] hover:bg-white transition-all"
+                                  style={{ height: `${barHeight}px` }}
+                                />
+                              );
+                            })}
+                          </div>
+                        </div>
+
+                        {/* Spectrogram Grid */}
+                        <div>
+                          <div className="text-[10px] font-mono text-[#64748B] mb-1">
+                            LOG-MEL SPECTROGRAM HEATMAP (128 MEL BINS &times; TIME FRAMES)
+                          </div>
+                          <div className="h-28 w-full bg-[#101820] p-1 border border-[#202A33] grid grid-rows-8 grid-flow-col gap-0.5 overflow-hidden">
+                            {prediction.spectrogram_preview.slice(0, 8).map((row, rIdx) =>
+                              row.slice(0, 32).map((cellVal, cIdx) => {
+                                const normIntensity = Math.min(1, Math.max(0.08, (cellVal + 2) / 4));
+                                return (
+                                  <div
+                                    key={`${rIdx}-${cIdx}`}
+                                    className="w-full h-full spectrogram-cell"
+                                    style={{
+                                      backgroundColor: `rgba(199, 244, 100, ${normIntensity})`,
+                                    }}
+                                    title={`Mel: ${rIdx}, Frame: ${cIdx}, Val: ${cellVal.toFixed(2)}`}
+                                  />
+                                );
+                              })
+                            )}
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* 10-Class Probability Distribution List */}
+                      <div className="bg-[#141e28] border border-[#202A33] p-6 space-y-3">
+                        <div className="flex items-center justify-between border-b border-[#202A33] pb-2">
+                          <h3 className="text-xs font-mono uppercase tracking-wider text-[#F4F0E8] flex items-center space-x-2">
+                            <span className="text-[#C7F464] font-bold">03 //</span>
+                            <span>Ranked Class Probabilities</span>
+                          </h3>
+                          <span className="text-[10px] font-mono text-[#64748B]">10 UrbanSound8K Classes</span>
+                        </div>
+
+                        <div className="space-y-2 pt-1">
+                          {prediction.probabilities.map((item, idx) => {
+                            const isTop = idx === 0;
                             return (
-                              <div
-                                key={idx}
-                                className="w-full bg-indigo-500/70 hover:bg-sky-400 rounded-full transition-all"
-                                style={{ height: `${barHeight}px` }}
-                              />
+                              <div key={item.class_id} className="space-y-1">
+                                <div className="flex justify-between text-xs font-mono">
+                                  <span className={isTop ? "font-bold text-[#C7F464]" : "text-[#ded7c8]"}>
+                                    {String(idx + 1).padStart(2, "0")}. {item.class_name.replace(/_/g, " ")}
+                                  </span>
+                                  <span className={isTop ? "font-bold text-[#C7F464]" : "text-[#64748B]"}>
+                                    {(item.probability * 100).toFixed(1)}%
+                                  </span>
+                                </div>
+                                <div className="w-full bg-[#101820] h-1.5 border border-[#202A33] overflow-hidden">
+                                  <div
+                                    className={`h-full transition-all duration-300 ${isTop ? "bg-[#C7F464]" : "bg-[#2c3b47]"}`}
+                                    style={{ width: `${item.probability * 100}%` }}
+                                  />
+                                </div>
+                              </div>
                             );
                           })}
                         </div>
                       </div>
-
-                      {/* Log-Mel Spectrogram Heatmap Preview */}
+                    </div>
+                  ) : (
+                    /* Empty State Placeholder */
+                    <div className="bg-[#141e28] border border-[#202A33] p-12 text-center flex flex-col items-center justify-center space-y-4">
+                      <div className="w-14 h-14 bg-[#101820] border border-[#202A33] flex items-center justify-center text-[#64748B]">
+                        <Volume2 className="w-7 h-7" />
+                      </div>
                       <div>
-                        <div className="text-[11px] font-mono text-slate-400 mb-1">
-                          Log-Mel Spectrogram Heatmap (Time &times; Frequency Bins)
-                        </div>
-                        <div className="h-24 w-full bg-slate-950/90 rounded-xl p-1.5 border border-slate-800 grid grid-rows-8 grid-flow-col gap-0.5 overflow-hidden">
-                          {prediction.spectrogram_preview.slice(0, 8).map((row, rIdx) =>
-                            row.slice(0, 32).map((cellVal, cIdx) => {
-                              // Normalize cell value to color opacity (0.1 to 1.0)
-                              const normIntensity = Math.min(1, Math.max(0.1, (cellVal + 2) / 4));
-                              return (
-                                <div
-                                  key={`${rIdx}-${cIdx}`}
-                                  className="w-full h-full rounded-[1px] spectrogram-cell"
-                                  style={{
-                                    backgroundColor: `rgba(99, 102, 241, ${normIntensity})`,
-                                  }}
-                                  title={`Mel: ${rIdx}, Frame: ${cIdx}, Val: ${cellVal.toFixed(2)}`}
-                                />
-                              );
-                            })
-                          )}
-                        </div>
+                        <h3 className="text-lg font-display font-bold text-[#F4F0E8]">No Audio Ingested</h3>
+                        <p className="text-xs font-mono text-[#64748B] max-w-sm mt-1">
+                          Drop an audio recording in the upload area or select a preset above to begin feature extraction and classification.
+                        </p>
                       </div>
                     </div>
-
-                    {/* Probability Distribution Breakdown */}
-                    <div className="glass-panel p-5 rounded-2xl space-y-3">
-                      <h3 className="text-sm font-semibold text-white flex items-center justify-between">
-                        <span>Class Probability Distribution (10 Classes)</span>
-                        <span className="text-xs font-mono text-slate-400">Softmax Logits</span>
-                      </h3>
-
-                      <div className="space-y-2 pt-1">
-                        {prediction.probabilities.map((item, idx) => {
-                          const isTop = idx === 0;
-                          return (
-                            <div key={item.class_id} className="space-y-1">
-                              <div className="flex justify-between text-xs">
-                                <span
-                                  className={`capitalize truncate ${
-                                    isTop ? "font-bold text-white" : "text-slate-400"
-                                  }`}
-                                >
-                                  {item.class_name.replace(/_/g, " ")}
-                                </span>
-                                <span className={`font-mono ${isTop ? "text-brand-400 font-bold" : "text-slate-500"}`}>
-                                  {(item.probability * 100).toFixed(1)}%
-                                </span>
-                              </div>
-                              <div className="w-full bg-slate-900 rounded-full h-1.5 overflow-hidden">
-                                <div
-                                  className={`h-full rounded-full transition-all duration-300 ${
-                                    isTop ? "bg-brand-500" : "bg-slate-700"
-                                  }`}
-                                  style={{ width: `${Math.max(2, item.probability * 100)}%` }}
-                                />
-                              </div>
-                            </div>
-                          );
-                        })}
-                      </div>
-                    </div>
-                  </>
-                ) : (
-                  /* Empty state when no audio analyzed yet */
-                  <div className="glass-panel rounded-2xl p-12 text-center flex flex-col items-center justify-center space-y-4 text-slate-400 h-full min-h-[420px]">
-                    <div className="w-16 h-16 rounded-2xl bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-600">
-                      <FileAudio className="w-8 h-8" />
-                    </div>
-                    <div>
-                      <h3 className="text-base font-semibold text-slate-200">No Audio Analyzed Yet</h3>
-                      <p className="text-xs text-slate-500 max-w-sm mt-1">
-                        Select an audio file or click "Generate Test Siren" above to classify environmental sounds and visualize acoustic features.
-                      </p>
-                    </div>
-                  </div>
-                )}
+                  )}
+                </div>
               </div>
             </div>
           </div>
         )}
 
         {/* ==================================================== */}
-        {/* TAB 2: ROBUSTNESS LAB (CONTROLLED EXPERIMENT DEMO)   */}
+        {/* TAB 2: ROBUSTNESS LAB (CONTROLLED NOISE INJECTION)    */}
         {/* ==================================================== */}
         {activeTab === "robustness" && (
-          <div className="space-y-6">
-            <div>
-              <h1 className="text-2xl font-bold tracking-tight text-white flex items-center space-x-2">
-                <span>Robustness Testing Laboratory</span>
-                <span className="text-xs font-normal text-sky-400 bg-sky-500/10 px-2.5 py-0.5 rounded-md border border-sky-500/20">
-                  Controlled SNR Injection
-                </span>
-              </h1>
-              <p className="text-sm text-slate-400 mt-1">
-                Evaluate audio recordings under controlled synthetic background noise (20, 10, 5, 0 dB SNR) to observe how acoustic interference impacts model reliability.
-              </p>
+          <div className="space-y-8">
+            <div className="border border-[#202A33] bg-[#141e28] p-6 md:p-8 accent-edge-lime">
+              <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                <div>
+                  <div className="flex items-center space-x-2">
+                    <span className="text-[10px] font-mono px-2 py-0.5 bg-[#202A33] text-[#C7F464]">
+                      LABORATORY
+                    </span>
+                    <span className="text-[10px] font-mono text-[#64748B]">
+                      CONTROLLED SNR DEGRADATION
+                    </span>
+                  </div>
+                  <h1 className="text-3xl font-display font-bold text-[#F4F0E8] mt-1">
+                    Noise Robustness Testing Laboratory
+                  </h1>
+                  <p className="text-xs font-mono text-[#ded7c8] mt-1 max-w-2xl">
+                    Stress-test environmental recordings under controlled synthetic noise (20, 10, 5, 0 dB SNR).
+                    Observe exact confidence shifts and verify whether predictions withstand acoustic interference.
+                  </p>
+                </div>
+              </div>
             </div>
 
             {/* Test Configuration Controls */}
-            <div className="glass-panel p-6 rounded-2xl space-y-4">
-              <h2 className="text-sm font-semibold text-white flex items-center space-x-2">
-                <Sliders className="w-4 h-4 text-sky-400" />
+            <div className="bg-[#141e28] border border-[#202A33] p-6 space-y-6">
+              <h3 className="text-xs font-mono uppercase tracking-wider text-[#64748B] flex items-center space-x-2 border-b border-[#202A33] pb-2">
+                <Sliders className="w-4 h-4 text-[#C7F464]" />
                 <span>Controlled Degradation Parameters</span>
-              </h2>
+              </h3>
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 {/* Audio Source */}
                 <div>
                   <div className="flex items-center justify-between mb-1.5">
-                    <label className="text-xs text-slate-300 font-medium">Audio Source</label>
+                    <label className="text-xs font-mono text-[#ded7c8]">AUDIO SOURCE</label>
                     <button
                       type="button"
                       onClick={() => generateSamplePreset("siren", "robustness")}
-                      className="text-[11px] text-sky-400 hover:text-sky-300 flex items-center space-x-1 transition font-medium"
+                      className="text-[10px] font-mono text-[#C7F464] hover:underline flex items-center space-x-1"
                     >
-                      <Sparkles className="w-3 h-3 text-amber-400" />
+                      <Sparkles className="w-3 h-3 text-[#C7F464]" />
                       <span>Use Test Siren</span>
                     </button>
                   </div>
-                  <label className="border border-slate-700/80 hover:border-sky-500/50 rounded-xl p-3 flex items-center space-x-3 cursor-pointer bg-slate-900/60 transition">
-                    <Upload className="w-5 h-5 text-sky-400" />
-                    <span className="text-xs text-slate-300 truncate">
+                  <label className="border border-[#202A33] hover:border-[#C7F464] p-3 flex items-center space-x-3 cursor-pointer bg-[#101820] transition">
+                    <Upload className="w-4 h-4 text-[#C7F464]" />
+                    <span className="text-xs font-mono text-[#F4F0E8] truncate">
                       {robFile?.name || selectedFile?.name || "Choose clean audio recording..."}
                     </span>
                     <input
@@ -937,9 +1043,9 @@ export default function App() {
 
                 {/* Target SNR Selector */}
                 <div>
-                  <div className="flex justify-between text-xs mb-1.5">
-                    <span className="text-slate-300 font-medium">Target SNR (Signal-to-Noise Ratio)</span>
-                    <span className="font-mono text-sky-400 font-bold">{targetSnr} dB</span>
+                  <div className="flex justify-between text-xs font-mono mb-1.5">
+                    <span className="text-[#ded7c8]">TARGET SNR LEVEL</span>
+                    <span className="text-[#C7F464] font-bold">{targetSnr} dB</span>
                   </div>
                   <div className="grid grid-cols-4 gap-1.5">
                     {[20.0, 10.0, 5.0, 0.0].map((val) => (
@@ -947,10 +1053,10 @@ export default function App() {
                         key={val}
                         type="button"
                         onClick={() => setTargetSnr(val)}
-                        className={`py-2 rounded-xl text-xs font-mono font-medium border transition ${
+                        className={`py-2 text-xs font-mono font-bold border transition ${
                           targetSnr === val
-                            ? "bg-sky-500/15 border-sky-500 text-sky-300 font-bold"
-                            : "bg-slate-900 border-slate-800 text-slate-400 hover:text-slate-300"
+                            ? "bg-[#C7F464] text-[#101820] border-[#C7F464] shadow-sharp-lime"
+                            : "bg-[#101820] border-[#202A33] text-[#ded7c8] hover:border-[#64748B]"
                         }`}
                       >
                         {val} dB
@@ -961,11 +1067,11 @@ export default function App() {
 
                 {/* Noise Profile */}
                 <div>
-                  <label className="text-xs text-slate-300 font-medium block mb-1.5">Noise Profile</label>
+                  <label className="text-xs font-mono text-[#ded7c8] block mb-1.5">NOISE PROFILE</label>
                   <select
                     value={noiseType}
                     onChange={(e) => setNoiseType(e.target.value)}
-                    className="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-sky-500"
+                    className="w-full bg-[#101820] border border-[#202A33] px-3 py-2 text-xs font-mono text-[#F4F0E8] focus:outline-none focus:border-[#C7F464]"
                   >
                     <option value="ambient">Ambient (Urban background blend)</option>
                     <option value="pink">Pink Noise (1/f natural acoustic decay)</option>
@@ -979,7 +1085,7 @@ export default function App() {
                 <button
                   disabled={isTestingRobustness || (!robFile && !selectedFile)}
                   onClick={handleRobustnessTest}
-                  className="px-6 py-2.5 rounded-xl font-semibold text-xs bg-sky-600 hover:bg-sky-500 text-white shadow-lg shadow-sky-600/20 disabled:opacity-50 transition flex items-center space-x-2"
+                  className="px-6 py-3 font-display font-bold text-xs bg-[#C7F464] hover:bg-[#b6e94e] text-[#101820] shadow-sharp-lime disabled:opacity-40 transition flex items-center space-x-2"
                 >
                   {isTestingRobustness ? (
                     <>
@@ -988,7 +1094,7 @@ export default function App() {
                     </>
                   ) : (
                     <>
-                      <FlaskConical className="w-3.5 h-3.5" />
+                      <Zap className="w-3.5 h-3.5 fill-current" />
                       <span>Run Robustness Comparison</span>
                     </>
                   )}
@@ -996,9 +1102,8 @@ export default function App() {
               </div>
 
               {robError && (
-                <div className="p-3 rounded-xl bg-rose-500/10 border border-rose-500/30 text-rose-400 text-xs flex items-center space-x-2">
-                  <AlertTriangle className="w-4 h-4 shrink-0" />
-                  <span>{robError}</span>
+                <div className="p-3 bg-[#202A33] border-l-4 border-[#FF6B35] text-[#FF6B35] text-xs font-mono">
+                  {robError}
                 </div>
               )}
             </div>
@@ -1007,110 +1112,91 @@ export default function App() {
             {robustnessResult && (
               <div className="space-y-6">
                 {/* Summary Banner */}
-                <div className="glass-panel p-5 rounded-2xl border border-sky-500/30 bg-gradient-to-r from-slate-900 to-sky-950/30 flex items-center justify-between">
+                <div className="bg-[#141e28] border border-[#202A33] p-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4 accent-edge-lime">
                   <div>
-                    <span className="text-xs font-mono uppercase text-sky-400 tracking-wider">
-                      Experiment Demonstration Verdict
+                    <span className="text-[10px] font-mono uppercase tracking-wider text-[#C7F464]">
+                      STRESS-TEST VERDICT
                     </span>
-                    <h3 className="text-lg font-bold text-white mt-0.5">
+                    <h3 className="text-xl font-display font-bold text-[#F4F0E8] mt-1">
                       {robustnessResult.summary_verdict}
                     </h3>
                   </div>
 
                   <div className="text-right font-mono">
-                    <span className="text-xs text-slate-400">Confidence Shift</span>
+                    <span className="text-xs text-[#64748B]">CONFIDENCE SHIFT</span>
                     <p
-                      className={`text-lg font-bold ${
-                        robustnessResult.confidence_drop > 0 ? "text-amber-400" : "text-emerald-400"
+                      className={`text-xl font-bold ${
+                        robustnessResult.confidence_drop > 0 ? "text-[#FF6B35]" : "text-[#C7F464]"
                       }`}
                     >
-                      {robustnessResult.confidence_drop > 0 ? "-" : "+"}
-                      {Math.abs(robustnessResult.confidence_drop * 100).toFixed(1)}%
+                      {robustnessResult.confidence_drop > 0
+                        ? `-${(robustnessResult.confidence_drop * 100).toFixed(1)}%`
+                        : `+${(-robustnessResult.confidence_drop * 100).toFixed(1)}%`}
                     </p>
                   </div>
                 </div>
 
-                {/* Side-by-Side Cards */}
+                {/* Side-by-Side Clean vs Noisy Cards */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {/* Clean Condition Card */}
-                  <div className="glass-panel p-6 rounded-2xl border-slate-800 space-y-4">
-                    <div className="flex items-center justify-between">
-                      <span className="text-xs font-mono font-semibold text-emerald-400 uppercase tracking-wider">
-                        Condition: Original Clean Recording
-                      </span>
-                      <span className="text-xs font-mono text-slate-500">&infin; dB SNR</span>
+                  {/* Clean Prediction */}
+                  <div className="bg-[#141e28] border border-[#202A33] p-6 space-y-4">
+                    <div className="flex items-center justify-between border-b border-[#202A33] pb-2 font-mono text-xs">
+                      <span className="text-[#C7F464] font-bold">CLEAN AUDIO (BASE)</span>
+                      <span className="text-[#64748B]">INF: {robustnessResult.clean_prediction.inference_latency_ms.toFixed(1)} ms</span>
                     </div>
 
                     <div>
-                      <h4 className="text-2xl font-bold text-white capitalize">
+                      <span className="text-[10px] font-mono text-[#64748B]">PREDICTED CLASS</span>
+                      <h4 className="text-2xl font-display font-bold text-[#F4F0E8] capitalize">
                         {robustnessResult.clean_prediction.predicted_class_name.replace(/_/g, " ")}
                       </h4>
-                      <p className="text-xs text-slate-400 mt-0.5">
-                        Confidence: {(robustnessResult.clean_prediction.confidence * 100).toFixed(1)}%
-                      </p>
                     </div>
 
-                    {/* Waveform preview */}
-                    <div className="h-14 w-full bg-slate-950 rounded-xl p-2 border border-slate-800 flex items-center justify-between gap-0.5 overflow-hidden">
-                      {robustnessResult.clean_prediction.waveform_preview.map((val, idx) => (
+                    <div className="space-y-1">
+                      <div className="flex justify-between text-xs font-mono">
+                        <span className="text-[#64748B]">Confidence</span>
+                        <span className="text-[#C7F464] font-bold">
+                          {(robustnessResult.clean_prediction.confidence * 100).toFixed(1)}%
+                        </span>
+                      </div>
+                      <div className="w-full bg-[#101820] h-2 border border-[#202A33]">
                         <div
-                          key={idx}
-                          className="w-full bg-emerald-500/60 rounded-full"
-                          style={{ height: `${Math.max(4, Math.abs(val) * 45)}px` }}
+                          className="h-full bg-[#C7F464]"
+                          style={{ width: `${robustnessResult.clean_prediction.confidence * 100}%` }}
                         />
-                      ))}
-                    </div>
-
-                    <div className="text-xs text-slate-400">
-                      Status:{" "}
-                      <span className="text-emerald-400 font-medium">
-                        {robustnessResult.clean_prediction.status_message}
-                      </span>
+                      </div>
                     </div>
                   </div>
 
-                  {/* Noisy Condition Card */}
-                  <div className="glass-panel p-6 rounded-2xl border-slate-800 space-y-4">
-                    <div className="flex items-center justify-between">
-                      <span className="text-xs font-mono font-semibold text-amber-400 uppercase tracking-wider">
-                        Condition: Degraded with {robustnessResult.noise_type} noise
+                  {/* Noisy Prediction */}
+                  <div className="bg-[#141e28] border border-[#202A33] p-6 space-y-4">
+                    <div className="flex items-center justify-between border-b border-[#202A33] pb-2 font-mono text-xs">
+                      <span className="text-[#FF6B35] font-bold">
+                        CORRUPTED ({robustnessResult.snr_db} dB {robustnessResult.noise_type.toUpperCase()})
                       </span>
-                      <span className="text-xs font-mono text-amber-400 font-bold">
-                        {robustnessResult.snr_db} dB SNR
-                      </span>
+                      <span className="text-[#64748B]">INF: {robustnessResult.noisy_prediction.inference_latency_ms.toFixed(1)} ms</span>
                     </div>
 
                     <div>
-                      <h4 className="text-2xl font-bold text-white capitalize">
+                      <span className="text-[10px] font-mono text-[#64748B]">PREDICTED CLASS</span>
+                      <h4 className="text-2xl font-display font-bold text-[#F4F0E8] capitalize">
                         {robustnessResult.noisy_prediction.predicted_class_name.replace(/_/g, " ")}
                       </h4>
-                      <p className="text-xs text-slate-400 mt-0.5">
-                        Confidence: {(robustnessResult.noisy_prediction.confidence * 100).toFixed(1)}%
-                      </p>
                     </div>
 
-                    {/* Noisy Waveform preview */}
-                    <div className="h-14 w-full bg-slate-950 rounded-xl p-2 border border-slate-800 flex items-center justify-between gap-0.5 overflow-hidden">
-                      {robustnessResult.noisy_prediction.waveform_preview.map((val, idx) => (
+                    <div className="space-y-1">
+                      <div className="flex justify-between text-xs font-mono">
+                        <span className="text-[#64748B]">Confidence</span>
+                        <span className="text-[#FF6B35] font-bold">
+                          {(robustnessResult.noisy_prediction.confidence * 100).toFixed(1)}%
+                        </span>
+                      </div>
+                      <div className="w-full bg-[#101820] h-2 border border-[#202A33]">
                         <div
-                          key={idx}
-                          className="w-full bg-amber-500/60 rounded-full"
-                          style={{ height: `${Math.max(4, Math.abs(val) * 45)}px` }}
+                          className="h-full bg-[#FF6B35]"
+                          style={{ width: `${robustnessResult.noisy_prediction.confidence * 100}%` }}
                         />
-                      ))}
-                    </div>
-
-                    <div className="text-xs text-slate-400">
-                      Status:{" "}
-                      <span
-                        className={`font-medium ${
-                          robustnessResult.noisy_prediction.is_uncertain
-                            ? "text-amber-400"
-                            : "text-emerald-400"
-                        }`}
-                      >
-                        {robustnessResult.noisy_prediction.status_message}
-                      </span>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -1123,191 +1209,118 @@ export default function App() {
         {/* TAB 3: PERFORMANCE ANALYTICS & BENCHMARKS           */}
         {/* ==================================================== */}
         {activeTab === "research" && (
-          <div className="space-y-6">
-            <div>
-              <h1 className="text-2xl font-bold tracking-tight text-white flex items-center space-x-2">
-                <span>Performance &amp; Evaluation Benchmarks</span>
-                <span className="text-xs font-normal text-brand-400 bg-brand-500/10 px-2.5 py-0.5 rounded-md border border-brand-500/20">
-                  Model Telemetry
-                </span>
+          <div className="space-y-8">
+            <div className="border border-[#202A33] bg-[#141e28] p-6 md:p-8 accent-edge-lime">
+              <span className="text-[10px] font-mono px-2 py-0.5 bg-[#202A33] text-[#C7F464]">
+                METRICS TELEMETRY
+              </span>
+              <h1 className="text-3xl font-display font-bold text-[#F4F0E8] mt-1">
+                Performance &amp; Evaluation Benchmarks
               </h1>
-              <p className="text-sm text-slate-400 mt-1">
-                Evaluation metrics and benchmarks loaded directly from model evaluation runs (Baseline Model, Noise-Augmented Model, and Selective Classification).
+              <p className="text-xs font-mono text-[#ded7c8] mt-1 max-w-2xl">
+                Evaluation results loaded directly from disk artifacts. Compare the clean-trained Baseline against the Noise-Augmented model across controlled SNR degradation levels.
               </p>
             </div>
 
             {loadingMetrics ? (
-              <div className="glass-panel p-12 text-center rounded-2xl flex flex-col items-center justify-center space-y-3">
-                <RefreshCw className="w-8 h-8 text-brand-400 animate-spin" />
-                <p className="text-sm text-slate-300 font-medium">Loading evaluation results from disk...</p>
+              <div className="bg-[#141e28] border border-[#202A33] p-12 text-center flex flex-col items-center justify-center space-y-3">
+                <RefreshCw className="w-6 h-6 text-[#C7F464] animate-spin" />
+                <p className="text-xs font-mono text-[#ded7c8]">Loading evaluation metrics from disk...</p>
               </div>
             ) : metricsData ? (
-              <div className="space-y-6">
-                {/* 1. Model Comparison Table */}
+              <div className="space-y-8">
+                {/* 1. Comparison Table */}
                 {metricsData.data?.comparison?.comparison_table && (
-                  <div className="glass-panel p-6 rounded-2xl space-y-4">
-                    <div className="flex items-center justify-between">
+                  <div className="bg-[#141e28] border border-[#202A33] p-6 space-y-4">
+                    <div className="flex items-center justify-between border-b border-[#202A33] pb-3">
                       <div>
-                        <h2 className="text-base font-bold text-white">
+                        <h3 className="text-sm font-display font-bold text-[#F4F0E8]">
                           Model Comparison: Baseline vs. Noise-Augmented
-                        </h2>
-                        <p className="text-xs text-slate-400 mt-0.5">
-                          Evaluated on held-out test data under variable Signal-to-Noise Ratios (Clean &rarr; 0 dB).
+                        </h3>
+                        <p className="text-xs font-mono text-[#64748B] mt-0.5">
+                          Evaluated on held-out test data (Fold 10) under variable Signal-to-Noise Ratios (Clean &rarr; 0 dB).
                         </p>
                       </div>
-                      <span className="text-xs font-mono text-brand-400 bg-brand-500/10 px-2.5 py-1 rounded-full border border-brand-500/20">
-                        10-Fold Segregation
+                      <span className="text-[10px] font-mono text-[#C7F464] bg-[#202A33] px-2 py-1">
+                        10-FOLD SPLIT
                       </span>
                     </div>
 
                     <div className="overflow-x-auto">
-                      <table className="w-full text-xs text-left border-collapse">
+                      <table className="w-full text-xs font-mono text-left">
                         <thead>
-                          <tr className="border-b border-slate-800 text-slate-400 font-mono">
-                            <th className="py-2.5 px-3">Condition (SNR)</th>
-                            <th className="py-2.5 px-3">Baseline F1 (Exp A)</th>
-                            <th className="py-2.5 px-3">Augmented F1 (Exp B)</th>
-                            <th className="py-2.5 px-3 text-brand-400">&Delta; Macro F1</th>
-                            <th className="py-2.5 px-3">Baseline Acc</th>
-                            <th className="py-2.5 px-3">Augmented Acc</th>
-                            <th className="py-2.5 px-3 text-sky-400">&Delta; Accuracy</th>
+                          <tr className="border-b border-[#202A33] text-[#64748B]">
+                            <th className="py-2.5 px-3">SNR CONDITION</th>
+                            <th className="py-2.5 px-3">BASELINE ACCURACY</th>
+                            <th className="py-2.5 px-3">AUGMENTED ACCURACY</th>
+                            <th className="py-2.5 px-3">ACCURACY DELTA</th>
+                            <th className="py-2.5 px-3">F1 RETENTION</th>
                           </tr>
                         </thead>
-                        <tbody className="divide-y divide-slate-800/60 font-mono">
-                          {metricsData.data.comparison.comparison_table.map((row: any, i: number) => {
-                            const dF1 = row.delta_macro_f1 * 100;
-                            const dAcc = row.delta_accuracy * 100;
-                            return (
-                              <tr key={i} className="hover:bg-slate-900/40">
-                                <td className="py-2.5 px-3 font-semibold text-white">{row.condition}</td>
-                                <td className="py-2.5 px-3 text-slate-300">{(row.baseline_macro_f1 * 100).toFixed(2)}%</td>
-                                <td className="py-2.5 px-3 text-slate-200 font-medium">{(row.augmented_macro_f1 * 100).toFixed(2)}%</td>
-                                <td className={`py-2.5 px-3 font-bold ${dF1 >= 0 ? "text-emerald-400" : "text-rose-400"}`}>
-                                  {dF1 >= 0 ? "+" : ""}{dF1.toFixed(2)}%
-                                </td>
-                                <td className="py-2.5 px-3 text-slate-300">{(row.baseline_accuracy * 100).toFixed(2)}%</td>
-                                <td className="py-2.5 px-3 text-slate-200 font-medium">{(row.augmented_accuracy * 100).toFixed(2)}%</td>
-                                <td className={`py-2.5 px-3 font-bold ${dAcc >= 0 ? "text-emerald-400" : "text-rose-400"}`}>
-                                  {dAcc >= 0 ? "+" : ""}{dAcc.toFixed(2)}%
-                                </td>
-                              </tr>
-                            );
-                          })}
+                        <tbody className="divide-y divide-[#202A33]">
+                          {metricsData.data.comparison.comparison_table.map((row: any) => (
+                            <tr key={row.condition} className="hover:bg-[#101820]">
+                              <td className="py-2.5 px-3 font-bold text-[#F4F0E8]">{row.condition}</td>
+                              <td className="py-2.5 px-3 text-[#ded7c8]">{(row.baseline_accuracy * 100).toFixed(1)}%</td>
+                              <td className="py-2.5 px-3 text-[#C7F464] font-bold">{(row.augmented_accuracy * 100).toFixed(1)}%</td>
+                              <td className="py-2.5 px-3">
+                                <span
+                                  className={`px-1.5 py-0.5 ${
+                                    row.accuracy_diff >= 0
+                                      ? "text-[#C7F464] bg-[#C7F464]/10"
+                                      : "text-[#FF6B35] bg-[#FF6B35]/10"
+                                  }`}
+                                >
+                                  {row.accuracy_diff >= 0 ? `+${(row.accuracy_diff * 100).toFixed(1)}%` : `${(row.accuracy_diff * 100).toFixed(1)}%`}
+                                </span>
+                              </td>
+                              <td className="py-2.5 px-3 text-[#64748B]">
+                                {(row.augmented_macro_f1 * 100).toFixed(1)}% Macro F1
+                              </td>
+                            </tr>
+                          ))}
                         </tbody>
                       </table>
                     </div>
                   </div>
                 )}
 
-                {/* 2. Publication Plots Grid */}
+                {/* 2. Visual Metric Artifacts Grid */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {/* Robustness SNR Degradation Curve */}
-                  {metricsData.plots?.comparison_snr_curve && (
-                    <div className="glass-panel p-5 rounded-2xl space-y-3">
-                      <div className="flex justify-between items-center">
-                        <h3 className="text-xs font-bold uppercase tracking-wider text-slate-300 font-mono">
-                          Macro-F1 vs. Signal-to-Noise Ratio (dB)
-                        </h3>
-                        <a
-                          href={metricsData.plots.comparison_snr_curve}
-                          target="_blank"
-                          rel="noreferrer"
-                          className="text-xs text-brand-400 hover:text-brand-300 flex items-center space-x-1"
-                        >
-                          <span>Full Res</span>
-                          <ExternalLink className="w-3 h-3" />
-                        </a>
-                      </div>
-                      <img
-                        src={metricsData.plots.comparison_snr_curve}
-                        alt="SNR Robustness Curve"
-                        className="rounded-xl border border-slate-800 w-full"
-                      />
+                  {/* Robustness Degradation Curve */}
+                  <div className="bg-[#141e28] border border-[#202A33] p-6 space-y-3">
+                    <div className="flex items-center justify-between border-b border-[#202A33] pb-2 font-mono text-xs">
+                      <span className="text-[#C7F464] font-bold">ROBUSTNESS DEGRADATION CURVE</span>
+                      <span className="text-[#64748B]">results/comparison_snr_curve.png</span>
                     </div>
-                  )}
+                    <img
+                      src="/static/results/comparison_snr_curve.png"
+                      alt="Robustness SNR Degradation Curve"
+                      className="w-full h-auto border border-[#202A33] bg-[#101820]"
+                      onError={(e) => {
+                        (e.target as HTMLElement).style.display = "none";
+                      }}
+                    />
+                  </div>
 
-                  {/* Selective Prediction Risk-Coverage Curve */}
-                  {metricsData.plots?.risk_coverage_curve && (
-                    <div className="glass-panel p-5 rounded-2xl space-y-3">
-                      <div className="flex justify-between items-center">
-                        <h3 className="text-xs font-bold uppercase tracking-wider text-slate-300 font-mono">
-                          Coverage vs. Selective Accuracy (Exp C)
-                        </h3>
-                        <a
-                          href={metricsData.plots.risk_coverage_curve}
-                          target="_blank"
-                          rel="noreferrer"
-                          className="text-xs text-brand-400 hover:text-brand-300 flex items-center space-x-1"
-                        >
-                          <span>Full Res</span>
-                          <ExternalLink className="w-3 h-3" />
-                        </a>
-                      </div>
-                      <img
-                        src={metricsData.plots.risk_coverage_curve}
-                        alt="Risk Coverage Curve"
-                        className="rounded-xl border border-slate-800 w-full"
-                      />
+                  {/* Calibration Reliability Diagram */}
+                  <div className="bg-[#141e28] border border-[#202A33] p-6 space-y-3">
+                    <div className="flex items-center justify-between border-b border-[#202A33] pb-2 font-mono text-xs">
+                      <span className="text-[#C7F464] font-bold">CALIBRATION DIAGNOSTIC</span>
+                      <span className="text-[#64748B]">results/reliability_diagram.png</span>
                     </div>
-                  )}
-
-                  {/* Reliability Diagram */}
-                  {metricsData.plots?.reliability_diagram && (
-                    <div className="glass-panel p-5 rounded-2xl space-y-3">
-                      <div className="flex justify-between items-center">
-                        <h3 className="text-xs font-bold uppercase tracking-wider text-slate-300 font-mono">
-                          Reliability Diagram (Temperature Scaling)
-                        </h3>
-                        <a
-                          href={metricsData.plots.reliability_diagram}
-                          target="_blank"
-                          rel="noreferrer"
-                          className="text-xs text-brand-400 hover:text-brand-300 flex items-center space-x-1"
-                        >
-                          <span>Full Res</span>
-                          <ExternalLink className="w-3 h-3" />
-                        </a>
-                      </div>
-                      <img
-                        src={metricsData.plots.reliability_diagram}
-                        alt="Reliability Diagram"
-                        className="rounded-xl border border-slate-800 w-full"
-                      />
-                    </div>
-                  )}
-
-                  {/* Confusion Matrix */}
-                  {metricsData.plots?.baseline_confusion_matrix && (
-                    <div className="glass-panel p-5 rounded-2xl space-y-3">
-                      <div className="flex justify-between items-center">
-                        <h3 className="text-xs font-bold uppercase tracking-wider text-slate-300 font-mono">
-                          Test Confusion Matrix (10 Urban Sound Classes)
-                        </h3>
-                        <a
-                          href={metricsData.plots.baseline_confusion_matrix}
-                          target="_blank"
-                          rel="noreferrer"
-                          className="text-xs text-brand-400 hover:text-brand-300 flex items-center space-x-1"
-                        >
-                          <span>Full Res</span>
-                          <ExternalLink className="w-3 h-3" />
-                        </a>
-                      </div>
-                      <img
-                        src={metricsData.plots.baseline_confusion_matrix}
-                        alt="Confusion Matrix"
-                        className="rounded-xl border border-slate-800 w-full"
-                      />
-                    </div>
-                  )}
+                    <img
+                      src="/static/results/reliability_diagram.png"
+                      alt="Reliability Diagram"
+                      className="w-full h-auto border border-[#202A33] bg-[#101820]"
+                      onError={(e) => {
+                        (e.target as HTMLElement).style.display = "none";
+                      }}
+                    />
+                  </div>
                 </div>
               </div>
-            ) : (
-              <div className="glass-panel p-12 text-center rounded-2xl text-slate-400">
-                <Info className="w-8 h-8 mx-auto text-slate-600 mb-2" />
-                <p>No experiment metrics found. Please train models to view scientific results.</p>
-              </div>
-            )}
+            ) : null}
           </div>
         )}
 
@@ -1315,84 +1328,63 @@ export default function App() {
         {/* TAB 4: MODEL SPECIFICATIONS & TAXONOMY               */}
         {/* ==================================================== */}
         {activeTab === "model_info" && (
-          <div className="space-y-6">
-            <div>
-              <h1 className="text-2xl font-bold tracking-tight text-white flex items-center space-x-2">
-                <span>Model Architecture & Taxonomy</span>
-                <span className="text-xs font-normal text-emerald-400 bg-emerald-500/10 px-2.5 py-0.5 rounded-md border border-emerald-500/20">
-                  Technical Specifications
-                </span>
+          <div className="space-y-8">
+            <div className="border border-[#202A33] bg-[#141e28] p-6 md:p-8 accent-edge-lime">
+              <span className="text-[10px] font-mono px-2 py-0.5 bg-[#202A33] text-[#C7F464]">
+                SPECIFICATIONS
+              </span>
+              <h1 className="text-3xl font-display font-bold text-[#F4F0E8] mt-1">
+                AcousticCNN Architecture &amp; Taxonomy
               </h1>
-              <p className="text-sm text-slate-400 mt-1">
-                Deep neural network specifications, 10-class taxonomy, cross-validation protocol, and scientific limitations.
+              <p className="text-xs font-mono text-[#ded7c8] mt-1 max-w-2xl">
+                Technical layer specifications, parameter budget, and the 10 urban sound classes defined in the UrbanSound8K standard taxonomy.
               </p>
             </div>
 
             {loadingModelInfo ? (
-              <div className="glass-panel p-12 text-center rounded-2xl flex flex-col items-center justify-center space-y-3">
-                <RefreshCw className="w-8 h-8 text-brand-400 animate-spin" />
-                <p className="text-sm text-slate-300">Fetching technical specifications...</p>
+              <div className="bg-[#141e28] border border-[#202A33] p-12 text-center flex flex-col items-center justify-center space-y-3">
+                <RefreshCw className="w-6 h-6 text-[#C7F464] animate-spin" />
+                <p className="text-xs font-mono text-[#ded7c8]">Loading architecture specs...</p>
               </div>
             ) : modelInfo ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {/* Architecture Specifications */}
-                <div className="glass-panel p-6 rounded-2xl space-y-4">
-                  <h2 className="text-sm font-semibold text-white flex items-center space-x-2">
-                    <Layers className="w-4 h-4 text-brand-400" />
-                    <span>Neural Network Architecture</span>
-                  </h2>
-
-                  <div className="space-y-2.5 text-xs">
-                    <div className="flex justify-between py-1.5 border-b border-slate-800">
-                      <span className="text-slate-400">Model Name:</span>
-                      <span className="font-semibold text-white">{modelInfo.model_name}</span>
-                    </div>
-                    <div className="flex justify-between py-1.5 border-b border-slate-800">
-                      <span className="text-slate-400">Total Parameters:</span>
-                      <span className="font-mono text-brand-400 font-bold">
-                        {modelInfo.parameters.total_parameters.toLocaleString()}
-                      </span>
-                    </div>
-                    <div className="flex justify-between py-1.5 border-b border-slate-800">
-                      <span className="text-slate-400">Checkpoint Size:</span>
-                      <span className="font-mono text-slate-200">{modelInfo.parameters.model_size_mb} MB</span>
-                    </div>
-                    <div className="flex justify-between py-1.5 border-b border-slate-800">
-                      <span className="text-slate-400">Input Representation:</span>
-                      <span className="font-mono text-slate-200">
-                        Log-Mel Spectrogram {JSON.stringify(modelInfo.input_representation.tensor_shape)}
-                      </span>
-                    </div>
-                    <div className="flex justify-between py-1.5 border-b border-slate-800">
-                      <span className="text-slate-400">Sample Rate:</span>
-                      <span className="font-mono text-slate-200">
-                        {modelInfo.input_representation.sampling_rate_hz} Hz (Fixed 4.0s)
-                      </span>
-                    </div>
-                    <div className="flex justify-between py-1.5 border-b border-slate-800">
-                      <span className="text-slate-400">Calibration Method:</span>
-                      <span className="text-emerald-400 font-medium">
-                        {modelInfo.confidence_calibration.calibration_method}
-                      </span>
-                    </div>
+              <div className="space-y-6">
+                {/* Spec Metric Cards */}
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                  <div className="bg-[#141e28] border border-[#202A33] p-4 font-mono">
+                    <span className="text-[10px] text-[#64748B]">TOTAL PARAMETERS</span>
+                    <div className="text-xl font-bold text-[#F4F0E8] mt-1">{modelInfo.parameter_count.toLocaleString()}</div>
+                    <div className="text-[10px] text-[#C7F464] mt-0.5">Compact CNN</div>
+                  </div>
+                  <div className="bg-[#141e28] border border-[#202A33] p-4 font-mono">
+                    <span className="text-[10px] text-[#64748B]">MODEL FOOTPRINT</span>
+                    <div className="text-xl font-bold text-[#F4F0E8] mt-1">{modelInfo.estimated_size_mb} MB</div>
+                    <div className="text-[10px] text-[#64748B] mt-0.5">Edge deployable</div>
+                  </div>
+                  <div className="bg-[#141e28] border border-[#202A33] p-4 font-mono">
+                    <span className="text-[10px] text-[#64748B]">INPUT TENSOR</span>
+                    <div className="text-xl font-bold text-[#F4F0E8] mt-1">1 &times; 128 &times; 173</div>
+                    <div className="text-[10px] text-[#64748B] mt-0.5">Log-Mel STFT</div>
+                  </div>
+                  <div className="bg-[#141e28] border border-[#202A33] p-4 font-mono">
+                    <span className="text-[10px] text-[#64748B]">CLASSES</span>
+                    <div className="text-xl font-bold text-[#C7F464] mt-1">{modelInfo.num_classes} Categories</div>
+                    <div className="text-[10px] text-[#64748B] mt-0.5">UrbanSound8K</div>
                   </div>
                 </div>
 
-                {/* UrbanSound8K Taxonomy */}
-                <div className="glass-panel p-6 rounded-2xl space-y-4">
-                  <h2 className="text-sm font-semibold text-white flex items-center space-x-2">
-                    <Volume2 className="w-4 h-4 text-sky-400" />
-                    <span>UrbanSound8K Taxonomy (10 Classes)</span>
-                  </h2>
-
-                  <div className="grid grid-cols-2 gap-2">
+                {/* 10-Class Taxonomy Matrix */}
+                <div className="bg-[#141e28] border border-[#202A33] p-6 space-y-4">
+                  <h3 className="text-xs font-mono uppercase tracking-wider text-[#64748B] border-b border-[#202A33] pb-2">
+                    Official UrbanSound8K 10-Class Taxonomy
+                  </h3>
+                  <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
                     {modelInfo.taxonomy.classes.map((cls: string, idx: number) => (
                       <div
-                        key={idx}
-                        className="p-2.5 rounded-xl bg-slate-900 border border-slate-800 text-xs flex items-center justify-between"
+                        key={cls}
+                        className="p-3 bg-[#101820] border border-[#202A33] font-mono text-xs flex items-center justify-between hover:border-[#C7F464] transition"
                       >
-                        <span className="font-mono text-slate-500">#{idx}</span>
-                        <span className="font-medium text-slate-200 capitalize">
+                        <span className="text-[#64748B]">#{idx}</span>
+                        <span className="font-bold text-[#F4F0E8] capitalize truncate ml-2">
                           {cls.replace(/_/g, " ")}
                         </span>
                       </div>
@@ -1401,16 +1393,15 @@ export default function App() {
                 </div>
 
                 {/* Technical Limitations */}
-                <div className="glass-panel p-6 rounded-2xl space-y-3 md:col-span-2">
-                  <h2 className="text-sm font-semibold text-white flex items-center space-x-2">
-                    <HelpCircle className="w-4 h-4 text-amber-400" />
+                <div className="bg-[#141e28] border border-[#202A33] p-6 space-y-3">
+                  <h3 className="text-xs font-mono uppercase tracking-wider text-[#FF6B35] flex items-center space-x-2 border-b border-[#202A33] pb-2">
+                    <HelpCircle className="w-4 h-4" />
                     <span>Technical &amp; Operational Limitations</span>
-                  </h2>
-
-                  <ul className="space-y-2 text-xs text-slate-400">
+                  </h3>
+                  <ul className="space-y-2 text-xs font-mono text-[#ded7c8]">
                     {modelInfo.known_limitations.map((item: string, i: number) => (
                       <li key={i} className="flex items-start space-x-2">
-                        <span className="text-brand-400 font-bold">&bull;</span>
+                        <span className="text-[#C7F464] font-bold">&bull;</span>
                         <span>{item}</span>
                       </li>
                     ))}
@@ -1422,9 +1413,9 @@ export default function App() {
         )}
       </main>
 
-      {/* Footer */}
-      <footer className="border-t border-slate-900 py-6 text-center text-xs text-slate-500 font-mono">
-        AcoustiGuard AI &bull; Environmental Audio Classification Application &bull; UrbanSound8K
+      {/* Industrial Footer */}
+      <footer className="border-t border-[#202A33] py-6 px-4 md:px-8 bg-[#101820] text-center text-xs font-mono text-[#64748B]">
+        AcoustiGuard AI &bull; Environmental Audio Classification Application &bull; UrbanSound8K &bull; All Systems Operational
       </footer>
     </div>
   );

@@ -5,23 +5,70 @@ export default {
   theme: {
     extend: {
       fontFamily: {
+        display: ["Space Grotesk", "Inter", "system-ui", "sans-serif"],
         sans: ["Inter", "system-ui", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "Roboto", "sans-serif"],
         mono: ["JetBrains Mono", "ui-monospace", "SFMono-Regular", "Menlo", "Monaco", "Consolas", "monospace"],
       },
       colors: {
-        brand: {
-          50: "#eef2ff",
-          100: "#e0e7ff",
-          200: "#c7d2fe",
-          300: "#a5b4fc",
-          400: "#818cf8",
-          500: "#6366f1",
-          600: "#4f46e5",
-          700: "#4338ca",
-          800: "#3730a3",
-          900: "#312e81",
-          950: "#1e1b4b",
+        // AcoustiGuard Signature Audio Palette
+        navy: {
+          DEFAULT: "#101820",
+          deep: "#0a0f15",
+          surface: "#141e28",
+          light: "#182430",
         },
+        charcoal: {
+          DEFAULT: "#202A33",
+          surface: "#25313c",
+          border: "#2c3b47",
+          hover: "#344553",
+        },
+        ivory: {
+          DEFAULT: "#F4F0E8",
+          muted: "#ded7c8",
+          dim: "#a39d91",
+        },
+        lime: {
+          DEFAULT: "#C7F464",
+          hover: "#b6e94e",
+          dim: "rgba(199, 244, 100, 0.15)",
+          border: "rgba(199, 244, 100, 0.35)",
+        },
+        orange: {
+          DEFAULT: "#FF6B35",
+          hover: "#f35a22",
+          dim: "rgba(255, 107, 53, 0.15)",
+          border: "rgba(255, 107, 53, 0.35)",
+        },
+        steel: {
+          DEFAULT: "#64748B",
+          dark: "#475569",
+          light: "#94a3b8",
+        },
+        // Backward-compatibility brand alias mapped to electric lime
+        brand: {
+          50: "#f7fee7",
+          100: "#ecfccb",
+          200: "#d9f99d",
+          300: "#C7F464",
+          400: "#b6e94e",
+          500: "#C7F464",
+          600: "#a3d936",
+          700: "#84b325",
+          800: "#658a1d",
+          900: "#496316",
+        },
+      },
+      borderRadius: {
+        none: "0px",
+        sm: "2px",
+        DEFAULT: "0px",
+        md: "4px",
+      },
+      boxShadow: {
+        sharp: "4px 4px 0px 0px #202A33",
+        "sharp-lime": "4px 4px 0px 0px #C7F464",
+        "sharp-orange": "4px 4px 0px 0px #FF6B35",
       },
     },
   },

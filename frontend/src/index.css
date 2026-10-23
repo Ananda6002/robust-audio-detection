@@ -7,53 +7,125 @@
     color-scheme: dark;
   }
   body {
-    @apply bg-slate-950 text-slate-100 min-h-screen font-sans;
+    background-color: #101820;
+    color: #F4F0E8;
+    min-height: 100vh;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     background-image: 
-      radial-gradient(circle at 15% 15%, rgba(99, 102, 241, 0.08) 0%, transparent 40%),
-      radial-gradient(circle at 85% 85%, rgba(14, 165, 233, 0.06) 0%, transparent 40%);
+      radial-gradient(rgba(100, 116, 139, 0.12) 1px, transparent 1px),
+      linear-gradient(to right, rgba(32, 42, 51, 0.25) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(32, 42, 51, 0.25) 1px, transparent 1px);
+    background-size: 24px 24px, 96px 96px, 96px 96px;
+    background-position: 0 0, 0 0, 0 0;
     background-attachment: fixed;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Space Grotesk', 'Inter', sans-serif;
+    letter-spacing: -0.025em;
   }
 }
 
-/* Custom Sleek Dark Scrollbar */
+/* Sharp Technical Audio Scrollbar */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #020617;
+  background: #101820;
+  border-left: 1px solid #202A33;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #1e293b;
-  border-radius: 4px;
+  background: #25313c;
+  border-radius: 0px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #334155;
+  background: #C7F464;
 }
 
-/* Frosted Glass Scientific Panels */
+/* Audio Console Panels & Technical Cards */
+.console-panel {
+  background: #141e28;
+  border: 1px solid #202A33;
+  border-radius: 0px;
+  box-shadow: 2px 2px 0px 0px rgba(10, 15, 21, 0.6);
+}
+
+.console-panel-interactive {
+  transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.console-panel-interactive:hover {
+  border-color: #344553;
+  transform: translate(-1px, -1px);
+  box-shadow: 3px 3px 0px 0px #202A33;
+}
+
+/* Colored Edge Accents */
+.accent-edge-lime {
+  border-left: 3px solid #C7F464;
+}
+
+.accent-edge-orange {
+  border-left: 3px solid #FF6B35;
+}
+
+/* Backward-compatibility for glass-panel references */
 .glass-panel {
-  background: rgba(15, 23, 42, 0.75);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.4);
+  background: #141e28;
+  border: 1px solid #202A33;
+  border-radius: 0px;
+  box-shadow: 2px 2px 0px 0px rgba(10, 15, 21, 0.5);
 }
 
-.glass-card-hover {
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+/* Audio Waveform Bar Animation */
+@keyframes audioPulse {
+  0%, 100% {
+    transform: scaleY(0.25);
+  }
+  50% {
+    transform: scaleY(1.0);
+  }
 }
 
-.glass-card-hover:hover {
-  border-color: rgba(99, 102, 241, 0.35);
-  transform: translateY(-1px);
-  box-shadow: 0 8px 30px -4px rgba(99, 102, 241, 0.12);
+.animate-audio-bar {
+  transform-origin: bottom;
+  animation: audioPulse 1.1s ease-in-out infinite;
 }
 
 /* Spectrogram Grid Preview Cells */
 .spectrogram-cell {
-  transition: background-color 0.15s ease;
+  border-radius: 0px;
+  transition: background-color 0.12s ease;
+}
+
+/* Custom Sharp Slider */
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  background: #202A33;
+  border-radius: 0px;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  background: #C7F464;
+  cursor: pointer;
+  border-radius: 0px;
+  border: 1px solid #101820;
+}
+
+input[type="range"]::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  background: #C7F464;
+  cursor: pointer;
+  border-radius: 0px;
+  border: 1px solid #101820;
 }
