@@ -19,6 +19,9 @@ import {
   ChevronRight,
   Terminal,
   Zap,
+  Radio,
+  FileAudio,
+  Trash2,
 } from "lucide-react";
 
 // ==========================================
@@ -168,6 +171,14 @@ export default function App() {
       setAudioUrl(url);
       setIsPlaying(false);
     }
+  };
+
+  const handleClearFile = () => {
+    setSelectedFile(null);
+    setAudioUrl(null);
+    setPrediction(null);
+    setAnalysisError(null);
+    setIsPlaying(false);
   };
 
   const handleRobFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -347,21 +358,26 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col font-sans bg-[#101820] text-[#F4F0E8] antialiased">
+    <div className="min-h-screen flex flex-col font-sans bg-[#101820] text-[#F4F0E8] antialiased selection:bg-[#C7F464] selection:text-[#101820]">
       {/* Top Console Navigation & Telemetry Bar */}
-      <header className="sticky top-0 z-50 bg-[#101820]/95 border-b border-[#202A33] px-4 md:px-8 py-3 backdrop-blur-md">
+      <header className="sticky top-0 z-50 bg-[#101820]/95 border-b border-[#202A33] px-4 md:px-8 py-3.5 backdrop-blur-md">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-          {/* Brand & Technical Engine Badge */}
-          <div className="flex items-center space-x-3">
-            <div className="w-8 h-8 bg-[#C7F464] text-[#101820] flex items-center justify-center font-display font-bold text-base shadow-sharp-lime">
-              AG
+          {/* Audio Intelligence Brand Mark */}
+          <div className="flex items-center space-x-3.5">
+            <div className="w-9 h-9 bg-[#202A33] border border-[#2c3b47] flex items-center justify-center relative shadow-sm">
+              <div className="flex items-end space-x-0.5 h-4">
+                <span className="w-1 bg-[#C7F464] h-2.5" />
+                <span className="w-1 bg-[#C7F464] h-4" />
+                <span className="w-1 bg-[#FF6B35] h-3" />
+                <span className="w-1 bg-[#C7F464] h-1.5" />
+              </div>
             </div>
             <div>
               <div className="flex items-center space-x-2">
                 <span className="font-display font-bold text-lg tracking-tight text-[#F4F0E8]">
                   AcoustiGuard AI
                 </span>
-                <span className="px-1.5 py-0.5 text-[10px] font-mono font-medium bg-[#202A33] text-[#C7F464] border border-[#202A33]">
+                <span className="px-2 py-0.5 text-[10px] font-mono uppercase font-semibold bg-[#202A33] text-[#C7F464] border border-[#2c3b47]">
                   UrbanSound8K
                 </span>
               </div>
@@ -371,14 +387,14 @@ export default function App() {
             </div>
           </div>
 
-          {/* Console Navigation Tabs */}
+          {/* Rectangular Navigation Tabs */}
           <nav className="flex items-center space-x-1 bg-[#141e28] p-1 border border-[#202A33]">
             <button
               onClick={() => setActiveTab("analyze")}
-              className={`px-3 py-1.5 text-xs font-mono font-medium transition-all ${
+              className={`px-3.5 py-1.5 text-xs font-mono font-medium transition-all focus:outline-none focus:ring-1 focus:ring-[#C7F464] ${
                 activeTab === "analyze"
                   ? "bg-[#C7F464] text-[#101820] font-bold shadow-sm"
-                  : "text-[#ded7c8] hover:text-white hover:bg-[#202A33]"
+                  : "text-[#ded7c8] hover:text-[#F4F0E8] hover:bg-[#202A33]"
               }`}
             >
               [ 01 // Audio Analysis ]
@@ -386,10 +402,10 @@ export default function App() {
 
             <button
               onClick={() => setActiveTab("robustness")}
-              className={`px-3 py-1.5 text-xs font-mono font-medium transition-all ${
+              className={`px-3.5 py-1.5 text-xs font-mono font-medium transition-all focus:outline-none focus:ring-1 focus:ring-[#C7F464] ${
                 activeTab === "robustness"
                   ? "bg-[#C7F464] text-[#101820] font-bold shadow-sm"
-                  : "text-[#ded7c8] hover:text-white hover:bg-[#202A33]"
+                  : "text-[#ded7c8] hover:text-[#F4F0E8] hover:bg-[#202A33]"
               }`}
             >
               [ 02 // Robustness Lab ]
@@ -397,10 +413,10 @@ export default function App() {
 
             <button
               onClick={() => setActiveTab("research")}
-              className={`px-3 py-1.5 text-xs font-mono font-medium transition-all ${
+              className={`px-3.5 py-1.5 text-xs font-mono font-medium transition-all focus:outline-none focus:ring-1 focus:ring-[#C7F464] ${
                 activeTab === "research"
                   ? "bg-[#C7F464] text-[#101820] font-bold shadow-sm"
-                  : "text-[#ded7c8] hover:text-white hover:bg-[#202A33]"
+                  : "text-[#ded7c8] hover:text-[#F4F0E8] hover:bg-[#202A33]"
               }`}
             >
               [ 03 // Performance Analytics ]
@@ -408,25 +424,25 @@ export default function App() {
 
             <button
               onClick={() => setActiveTab("model_info")}
-              className={`px-3 py-1.5 text-xs font-mono font-medium transition-all ${
+              className={`px-3.5 py-1.5 text-xs font-mono font-medium transition-all focus:outline-none focus:ring-1 focus:ring-[#C7F464] ${
                 activeTab === "model_info"
                   ? "bg-[#C7F464] text-[#101820] font-bold shadow-sm"
-                  : "text-[#ded7c8] hover:text-white hover:bg-[#202A33]"
+                  : "text-[#ded7c8] hover:text-[#F4F0E8] hover:bg-[#202A33]"
               }`}
             >
               [ 04 // Model &amp; Taxonomy ]
             </button>
           </nav>
 
-          {/* Telemetry Hardware Indicator */}
+          {/* Hardware & Telemetry LED Badge */}
           <div className="flex items-center space-x-2">
-            <div className="flex items-center space-x-2 px-2.5 py-1 bg-[#141e28] border border-[#202A33] text-[11px] font-mono">
+            <div className="flex items-center space-x-2 px-3 py-1 bg-[#141e28] border border-[#202A33] text-[11px] font-mono">
               <span
                 className={`w-2 h-2 ${
                   backendOnline ? "bg-[#C7F464] animate-pulse" : "bg-[#FF6B35]"
                 }`}
               />
-              <span className="text-[#F4F0E8]">{backendOnline ? "ENGINE ONLINE" : "OFFLINE"}</span>
+              <span className="text-[#F4F0E8] font-bold">{backendOnline ? "ENGINE ONLINE" : "OFFLINE"}</span>
               {health?.device && (
                 <span className="text-[#64748B] border-l border-[#202A33] pl-2 uppercase font-bold">
                   {health.device}
@@ -437,26 +453,25 @@ export default function App() {
         </div>
       </header>
 
-      {/* Main Container */}
+      {/* Main Content Area */}
       <main className="flex-1 max-w-7xl w-full mx-auto p-4 md:p-8 space-y-8">
-        {/* Offline Warning Banner */}
+        {/* Offline Helper Alert */}
         {!backendOnline && !loadingHealth && (
-          <div className="p-4 bg-[#202A33] border-l-4 border-[#FF6B35] text-xs flex items-center justify-between">
+          <div className="p-4 bg-[#202A33] border-l-4 border-[#FF6B35] text-xs font-mono flex items-center justify-between">
             <div className="flex items-center space-x-3">
               <AlertTriangle className="w-5 h-5 text-[#FF6B35] shrink-0" />
               <span>
-                <strong className="text-white">FastAPI Backend is currently offline.</strong> Run{" "}
-                <code className="bg-[#101820] px-2 py-0.5 text-[#C7F464] font-mono border border-[#202A33]">
+                <strong className="text-[#F4F0E8]">FastAPI Backend is currently offline.</strong> Start both backend and frontend servers with{" "}
+                <code className="bg-[#101820] px-2 py-0.5 text-[#C7F464] border border-[#2c3b47]">
                   python run.py
-                </code>{" "}
-                to start both servers.
+                </code>.
               </span>
             </div>
             <button
               onClick={checkHealth}
-              className="px-3 py-1 bg-[#FF6B35] hover:bg-[#f35a22] text-white font-mono text-xs font-bold transition shrink-0"
+              className="px-3 py-1.5 bg-[#FF6B35] hover:bg-[#f35a22] text-[#101820] font-mono font-bold text-xs uppercase transition shrink-0"
             >
-              RETRY
+              Retry Connection
             </button>
           </div>
         )}
@@ -466,7 +481,7 @@ export default function App() {
         {/* ==================================================== */}
         {activeTab === "analyze" && (
           <div className="space-y-8">
-            {/* HERO SECTION: Asymmetric Editorial Soundwave Display */}
+            {/* HERO SECTION: Asymmetric Two-Column Editorial Header */}
             <div className="border border-[#202A33] bg-[#141e28] p-6 md:p-10 relative overflow-hidden">
               <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-[#C7F464]/5 to-transparent pointer-events-none" />
 
@@ -474,13 +489,13 @@ export default function App() {
                 {/* Left Column: Bold Typography & Action */}
                 <div className="lg:col-span-7 space-y-5">
                   <div className="flex flex-wrap items-center gap-2">
-                    <span className="px-2 py-0.5 text-[10px] font-mono uppercase tracking-wider bg-[#202A33] text-[#C7F464] border border-[#202A33]">
+                    <span className="px-2 py-0.5 text-[10px] font-mono uppercase font-semibold bg-[#202A33] text-[#C7F464] border border-[#2c3b47]">
                       AUDIO INTELLIGENCE
                     </span>
-                    <span className="px-2 py-0.5 text-[10px] font-mono uppercase tracking-wider bg-[#202A33] text-[#F4F0E8] border border-[#202A33]">
+                    <span className="px-2 py-0.5 text-[10px] font-mono uppercase font-semibold bg-[#202A33] text-[#F4F0E8] border border-[#2c3b47]">
                       10 SOUND CLASSES
                     </span>
-                    <span className="px-2 py-0.5 text-[10px] font-mono uppercase tracking-wider bg-[#202A33] text-[#FF6B35] border border-[#202A33]">
+                    <span className="px-2 py-0.5 text-[10px] font-mono uppercase font-semibold bg-[#202A33] text-[#FF6B35] border border-[#2c3b47]">
                       NOISE ROBUSTNESS
                     </span>
                   </div>
@@ -493,48 +508,47 @@ export default function App() {
                   </h1>
 
                   <p className="text-sm md:text-base text-[#ded7c8] max-w-xl leading-relaxed">
-                    AcoustiGuard AI decodes urban environmental acoustic signatures.
-                    Engineered with deep convolutional feature representation, multi-SNR noise tolerance, and
-                    temperature-calibrated confidence detection to reject degraded or ambiguous audio inputs.
+                    AcoustiGuard AI decodes urban environmental acoustic signatures with deep convolutional neural networks.
+                    Features multi-SNR noise tolerance, confidence calibration, and selective classification to isolate ambiguous signals.
                   </p>
 
                   <div className="flex flex-wrap items-center gap-4 pt-2">
                     <button
                       onClick={scrollToAudioSection}
-                      className="px-6 py-3 bg-[#C7F464] hover:bg-[#b6e94e] text-[#101820] font-display font-bold text-sm tracking-wide transition shadow-sharp-lime flex items-center space-x-2"
+                      className="px-6 py-3 bg-[#C7F464] hover:bg-[#b6e94e] text-[#101820] font-display font-bold text-sm tracking-wide transition shadow-sharp-lime flex items-center space-x-2 focus:outline-none focus:ring-2 focus:ring-[#C7F464]"
                     >
                       <Zap className="w-4 h-4 fill-current" />
                       <span>Analyze Audio</span>
                     </button>
 
-                    <div className="flex items-center space-x-2 text-xs font-mono text-[#64748B] border border-[#202A33] px-3 py-2 bg-[#101820]">
+                    <div className="flex items-center space-x-2 text-xs font-mono text-[#64748B] border border-[#202A33] px-3.5 py-2.5 bg-[#101820]">
                       <Terminal className="w-3.5 h-3.5 text-[#C7F464]" />
-                      <span>22,050 Hz &bull; 128 Mel Bins &bull; 88,200 Samples</span>
+                      <span>22.05 kHz &bull; 128 Mels &bull; 88,200 Samples</span>
                     </div>
                   </div>
                 </div>
 
-                {/* Right Column: Decorative Geometric Soundwave & Frequency Spectrum */}
+                {/* Right Column: Decorative Soundwave & Spectrum Visualizer */}
                 <div className="lg:col-span-5 border border-[#202A33] bg-[#101820] p-6 space-y-4">
                   <div className="flex items-center justify-between text-xs font-mono text-[#64748B] border-b border-[#202A33] pb-2">
                     <span>LIVE SPECTRUM VISUALIZER</span>
-                    <span className="text-[#C7F464]">CH 01 / DUAL-BAND</span>
+                    <span className="text-[#C7F464] font-bold">CH 01 // DUAL-BAND</span>
                   </div>
 
-                  {/* Frequency Bars Graphic */}
-                  <div className="h-36 flex items-end justify-between gap-1 px-2 pt-4">
+                  {/* Frequency Spectrum Bars */}
+                  <div className="h-36 flex items-end justify-between gap-1 px-1 pt-4">
                     {[
-                      25, 40, 65, 80, 50, 95, 75, 45, 85, 90, 60, 35, 70, 85, 100, 75, 50, 90, 65, 40, 80, 60,
+                      25, 45, 65, 80, 50, 95, 75, 40, 85, 90, 60, 35, 70, 85, 100, 75, 50, 90, 65, 40, 80, 60,
                       45, 70, 90, 55, 30, 85, 65, 40, 50, 75,
                     ].map((heightPct, idx) => (
                       <div
                         key={idx}
                         className={`w-full transition-all duration-300 ${
-                          idx % 3 === 0
+                          idx % 4 === 0
                             ? "bg-[#C7F464]"
-                            : idx % 5 === 0
+                            : idx % 6 === 0
                             ? "bg-[#FF6B35]"
-                            : "bg-[#25313c] hover:bg-[#64748B]"
+                            : "bg-[#202A33] hover:bg-[#64748B]"
                         }`}
                         style={{ height: `${heightPct}%` }}
                       />
@@ -542,15 +556,15 @@ export default function App() {
                   </div>
 
                   <div className="grid grid-cols-3 gap-2 pt-2 border-t border-[#202A33] text-[10px] font-mono">
-                    <div className="text-center p-1.5 bg-[#141e28] border border-[#202A33]">
+                    <div className="text-center p-2 bg-[#141e28] border border-[#202A33]">
                       <div className="text-[#64748B]">LATENCY</div>
                       <div className="text-[#F4F0E8] font-bold mt-0.5">~13.4 ms</div>
                     </div>
-                    <div className="text-center p-1.5 bg-[#141e28] border border-[#202A33]">
-                      <div className="text-[#64748B]">PARAMS</div>
+                    <div className="text-center p-2 bg-[#141e28] border border-[#202A33]">
+                      <div className="text-[#64748B]">PARAMETERS</div>
                       <div className="text-[#F4F0E8] font-bold mt-0.5">767.7 K</div>
                     </div>
-                    <div className="text-center p-1.5 bg-[#141e28] border border-[#202A33]">
+                    <div className="text-center p-2 bg-[#141e28] border border-[#202A33]">
                       <div className="text-[#64748B]">CHECKPOINT</div>
                       <div className="text-[#C7F464] font-bold mt-0.5">2.93 MB</div>
                     </div>
@@ -559,13 +573,13 @@ export default function App() {
               </div>
             </div>
 
-            {/* SECTION 2: AUDIO INGESTION & CONTROLS */}
+            {/* SECTION 2: AUDIO WORKSTATION & PREDICTION */}
             <div ref={audioSectionRef} className="space-y-6">
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-[#202A33] pb-4">
                 <div>
                   <h2 className="text-xl md:text-2xl font-display font-bold text-[#F4F0E8] flex items-center space-x-2">
                     <span>Environmental Sound Classifier</span>
-                    <span className="text-[10px] font-mono px-2 py-0.5 bg-[#202A33] text-[#C7F464] border border-[#202A33]">
+                    <span className="text-[10px] font-mono px-2 py-0.5 bg-[#202A33] text-[#C7F464] border border-[#2c3b47]">
                       Confidence-Aware
                     </span>
                   </h2>
@@ -574,7 +588,7 @@ export default function App() {
                   </p>
                 </div>
 
-                {/* Preset Chips */}
+                {/* Instant Preset Buttons */}
                 <div className="flex flex-wrap items-center gap-1.5">
                   <span className="text-xs font-mono text-[#64748B] mr-1">PRESETS:</span>
                   <button
@@ -608,9 +622,9 @@ export default function App() {
                 </div>
               </div>
 
-              {/* Grid: Audio Input & Controls + Results */}
+              {/* Workstation Grid: Input Panel (5 cols) + Results (7 cols) */}
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-                {/* Left Column: Upload & Parameters (5 cols) */}
+                {/* Left Column: Upload Workstation & Parameters */}
                 <div className="lg:col-span-5 space-y-6">
                   {/* Upload Card */}
                   <div className="bg-[#141e28] border border-[#202A33] p-6 space-y-5 accent-edge-lime">
@@ -620,9 +634,18 @@ export default function App() {
                         <span>Audio Input</span>
                       </h3>
                       {selectedFile && (
-                        <span className="text-xs font-mono text-[#C7F464] truncate max-w-[180px]">
-                          {selectedFile.name}
-                        </span>
+                        <div className="flex items-center space-x-2">
+                          <span className="text-xs font-mono text-[#C7F464] truncate max-w-[140px]">
+                            {selectedFile.name}
+                          </span>
+                          <button
+                            onClick={handleClearFile}
+                            title="Clear loaded audio"
+                            className="p-1 hover:text-[#FF6B35] text-[#64748B] transition"
+                          >
+                            <Trash2 className="w-3.5 h-3.5" />
+                          </button>
+                        </div>
                       )}
                     </div>
 
@@ -683,7 +706,7 @@ export default function App() {
                         <span>Inference Parameters</span>
                       </h4>
 
-                      {/* Model Selector: Sharp Rectangular Buttons */}
+                      {/* Model Selector */}
                       <div>
                         <label className="text-xs font-mono text-[#ded7c8] block mb-1.5">MODEL VARIANT</label>
                         <div className="grid grid-cols-2 gap-2">
@@ -788,7 +811,7 @@ export default function App() {
                   </div>
                 </div>
 
-                {/* Right Column: Prediction Results & Spectrogram (7 cols) */}
+                {/* Right Column: Prediction Results & Spectrogram */}
                 <div className="lg:col-span-7 space-y-6">
                   {prediction ? (
                     <div className="space-y-6">
@@ -828,7 +851,7 @@ export default function App() {
                           </div>
                         </div>
 
-                        {/* Uncertainty Banner */}
+                        {/* Uncertainty Alert */}
                         {prediction.is_uncertain ? (
                           <div className="mt-4 p-3 bg-[#202A33] border-l-4 border-[#FF6B35] text-[#FF6B35] text-xs font-mono flex items-center justify-between">
                             <div className="flex items-center space-x-2">
@@ -1413,7 +1436,7 @@ export default function App() {
         )}
       </main>
 
-      {/* Industrial Footer */}
+      {/* Industrial Hardware Footer */}
       <footer className="border-t border-[#202A33] py-6 px-4 md:px-8 bg-[#101820] text-center text-xs font-mono text-[#64748B]">
         AcoustiGuard AI &bull; Environmental Audio Classification Application &bull; UrbanSound8K &bull; All Systems Operational
       </footer>
