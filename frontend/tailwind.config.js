@@ -45,6 +45,32 @@ export default {
           dark: "#475569",
           light: "#94a3b8",
         },
+        // Unique Audio Hardware & Spectral Accent Colors
+        cyan: {
+          DEFAULT: "#00F0FF",
+          hover: "#00d4e0",
+          dim: "rgba(0, 240, 255, 0.12)",
+          border: "rgba(0, 240, 255, 0.35)",
+        },
+        violet: {
+          DEFAULT: "#BD00FF",
+          light: "#D946EF",
+          surface: "#A855F7",
+          dim: "rgba(189, 0, 255, 0.12)",
+          border: "rgba(189, 0, 255, 0.35)",
+        },
+        amber: {
+          DEFAULT: "#F59E0B",
+          hover: "#d97706",
+          dim: "rgba(245, 158, 11, 0.12)",
+          border: "rgba(245, 158, 11, 0.35)",
+        },
+        emerald: {
+          DEFAULT: "#10B981",
+          hover: "#059669",
+          dim: "rgba(16, 185, 129, 0.12)",
+          border: "rgba(16, 185, 129, 0.35)",
+        },
         // Backward-compatibility brand alias mapped to electric lime
         brand: {
           50: "#f7fee7",
@@ -69,6 +95,9 @@ export default {
         sharp: "4px 4px 0px 0px #202A33",
         "sharp-lime": "4px 4px 0px 0px #C7F464",
         "sharp-orange": "4px 4px 0px 0px #FF6B35",
+        "sharp-cyan": "4px 4px 0px 0px #00F0FF",
+        "sharp-violet": "4px 4px 0px 0px #BD00FF",
+        "sharp-amber": "4px 4px 0px 0px #F59E0B",
       },
     },
   },

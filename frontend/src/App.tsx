@@ -366,10 +366,11 @@ export default function App() {
           <div className="flex items-center space-x-3.5">
             <div className="w-9 h-9 bg-[#202A33] border border-[#2c3b47] flex items-center justify-center relative shadow-sm">
               <div className="flex items-end space-x-0.5 h-4">
-                <span className="w-1 bg-[#C7F464] h-2.5" />
-                <span className="w-1 bg-[#C7F464] h-4" />
-                <span className="w-1 bg-[#FF6B35] h-3" />
-                <span className="w-1 bg-[#C7F464] h-1.5" />
+                <span className="w-1 bg-[#00F0FF] h-2.5" title="Cyan (High-Freq)" />
+                <span className="w-1 bg-[#C7F464] h-4" title="Lime (Mid-High)" />
+                <span className="w-1 bg-[#BD00FF] h-3" title="Violet (Resonance)" />
+                <span className="w-1 bg-[#FF6B35] h-3.5" title="Orange (Transient)" />
+                <span className="w-1 bg-[#F59E0B] h-1.5" title="Amber (Sub-Bass)" />
               </div>
             </div>
             <div>
@@ -377,7 +378,7 @@ export default function App() {
                 <span className="font-display font-bold text-lg tracking-tight text-[#F4F0E8]">
                   AcoustiGuard AI
                 </span>
-                <span className="px-2 py-0.5 text-[10px] font-mono uppercase font-semibold bg-[#202A33] text-[#C7F464] border border-[#2c3b47]">
+                <span className="px-2 py-0.5 text-[10px] font-mono uppercase font-semibold bg-[#202A33] text-[#00F0FF] border border-[#00F0FF]/30">
                   UrbanSound8K
                 </span>
               </div>
@@ -387,14 +388,14 @@ export default function App() {
             </div>
           </div>
 
-          {/* Rectangular Navigation Tabs */}
+          {/* Rectangular Navigation Tabs with Colored Accents */}
           <nav className="flex items-center space-x-1 bg-[#141e28] p-1 border border-[#202A33]">
             <button
               onClick={() => setActiveTab("analyze")}
               className={`px-3.5 py-1.5 text-xs font-mono font-medium transition-all focus:outline-none focus:ring-1 focus:ring-[#C7F464] ${
                 activeTab === "analyze"
-                  ? "bg-[#C7F464] text-[#101820] font-bold shadow-sm"
-                  : "text-[#ded7c8] hover:text-[#F4F0E8] hover:bg-[#202A33]"
+                  ? "bg-[#C7F464] text-[#101820] font-bold shadow-sharp-lime"
+                  : "text-[#ded7c8] hover:text-[#C7F464] hover:bg-[#202A33]"
               }`}
             >
               [ 01 // Audio Analysis ]
@@ -402,10 +403,10 @@ export default function App() {
 
             <button
               onClick={() => setActiveTab("robustness")}
-              className={`px-3.5 py-1.5 text-xs font-mono font-medium transition-all focus:outline-none focus:ring-1 focus:ring-[#C7F464] ${
+              className={`px-3.5 py-1.5 text-xs font-mono font-medium transition-all focus:outline-none focus:ring-1 focus:ring-[#00F0FF] ${
                 activeTab === "robustness"
-                  ? "bg-[#C7F464] text-[#101820] font-bold shadow-sm"
-                  : "text-[#ded7c8] hover:text-[#F4F0E8] hover:bg-[#202A33]"
+                  ? "bg-[#00F0FF] text-[#101820] font-bold shadow-sharp-cyan"
+                  : "text-[#ded7c8] hover:text-[#00F0FF] hover:bg-[#202A33]"
               }`}
             >
               [ 02 // Robustness Lab ]
@@ -413,10 +414,10 @@ export default function App() {
 
             <button
               onClick={() => setActiveTab("research")}
-              className={`px-3.5 py-1.5 text-xs font-mono font-medium transition-all focus:outline-none focus:ring-1 focus:ring-[#C7F464] ${
+              className={`px-3.5 py-1.5 text-xs font-mono font-medium transition-all focus:outline-none focus:ring-1 focus:ring-[#BD00FF] ${
                 activeTab === "research"
-                  ? "bg-[#C7F464] text-[#101820] font-bold shadow-sm"
-                  : "text-[#ded7c8] hover:text-[#F4F0E8] hover:bg-[#202A33]"
+                  ? "bg-[#BD00FF] text-white font-bold shadow-sharp-violet"
+                  : "text-[#ded7c8] hover:text-[#D946EF] hover:bg-[#202A33]"
               }`}
             >
               [ 03 // Performance Analytics ]
@@ -424,10 +425,10 @@ export default function App() {
 
             <button
               onClick={() => setActiveTab("model_info")}
-              className={`px-3.5 py-1.5 text-xs font-mono font-medium transition-all focus:outline-none focus:ring-1 focus:ring-[#C7F464] ${
+              className={`px-3.5 py-1.5 text-xs font-mono font-medium transition-all focus:outline-none focus:ring-1 focus:ring-[#F59E0B] ${
                 activeTab === "model_info"
-                  ? "bg-[#C7F464] text-[#101820] font-bold shadow-sm"
-                  : "text-[#ded7c8] hover:text-[#F4F0E8] hover:bg-[#202A33]"
+                  ? "bg-[#F59E0B] text-[#101820] font-bold shadow-sharp-amber"
+                  : "text-[#ded7c8] hover:text-[#F59E0B] hover:bg-[#202A33]"
               }`}
             >
               [ 04 // Model &amp; Taxonomy ]
@@ -439,12 +440,14 @@ export default function App() {
             <div className="flex items-center space-x-2 px-3 py-1 bg-[#141e28] border border-[#202A33] text-[11px] font-mono">
               <span
                 className={`w-2 h-2 ${
-                  backendOnline ? "bg-[#C7F464] animate-pulse" : "bg-[#FF6B35]"
+                  backendOnline ? "bg-[#10B981] animate-pulse glow-emerald" : "bg-[#FF6B35]"
                 }`}
               />
-              <span className="text-[#F4F0E8] font-bold">{backendOnline ? "ENGINE ONLINE" : "OFFLINE"}</span>
+              <span className={`font-bold ${backendOnline ? "text-[#10B981]" : "text-[#FF6B35]"}`}>
+                {backendOnline ? "ENGINE ONLINE" : "OFFLINE"}
+              </span>
               {health?.device && (
-                <span className="text-[#64748B] border-l border-[#202A33] pl-2 uppercase font-bold">
+                <span className="text-[#00F0FF] border-l border-[#202A33] pl-2 uppercase font-bold">
                   {health.device}
                 </span>
               )}
@@ -489,20 +492,23 @@ export default function App() {
                 {/* Left Column: Bold Typography & Action */}
                 <div className="lg:col-span-7 space-y-5">
                   <div className="flex flex-wrap items-center gap-2">
-                    <span className="px-2 py-0.5 text-[10px] font-mono uppercase font-semibold bg-[#202A33] text-[#C7F464] border border-[#2c3b47]">
+                    <span className="px-2.5 py-1 text-[10px] font-mono uppercase font-bold bg-[#00F0FF]/10 text-[#00F0FF] border border-[#00F0FF]/40 shadow-sm">
                       AUDIO INTELLIGENCE
                     </span>
-                    <span className="px-2 py-0.5 text-[10px] font-mono uppercase font-semibold bg-[#202A33] text-[#F4F0E8] border border-[#2c3b47]">
+                    <span className="px-2.5 py-1 text-[10px] font-mono uppercase font-bold bg-[#BD00FF]/10 text-[#D946EF] border border-[#BD00FF]/40 shadow-sm">
                       10 SOUND CLASSES
                     </span>
-                    <span className="px-2 py-0.5 text-[10px] font-mono uppercase font-semibold bg-[#202A33] text-[#FF6B35] border border-[#2c3b47]">
+                    <span className="px-2.5 py-1 text-[10px] font-mono uppercase font-bold bg-[#FF6B35]/10 text-[#FF6B35] border border-[#FF6B35]/40 shadow-sm">
                       NOISE ROBUSTNESS
+                    </span>
+                    <span className="px-2.5 py-1 text-[10px] font-mono uppercase font-bold bg-[#F59E0B]/10 text-[#F59E0B] border border-[#F59E0B]/40 shadow-sm">
+                      CONFIDENCE-AWARE
                     </span>
                   </div>
 
                   <h1 className="text-4xl md:text-5xl lg:text-6xl font-display font-bold tracking-tight text-[#F4F0E8] leading-[1.05]">
                     Every Sound <br />
-                    <span className="text-[#C7F464] underline decoration-2 underline-offset-8">
+                    <span className="bg-gradient-to-r from-[#C7F464] via-[#00F0FF] to-[#BD00FF] bg-clip-text text-transparent underline decoration-[#00F0FF] decoration-2 underline-offset-8">
                       Has a Story.
                     </span>
                   </h1>
@@ -521,48 +527,56 @@ export default function App() {
                       <span>Analyze Audio</span>
                     </button>
 
-                    <div className="flex items-center space-x-2 text-xs font-mono text-[#64748B] border border-[#202A33] px-3.5 py-2.5 bg-[#101820]">
-                      <Terminal className="w-3.5 h-3.5 text-[#C7F464]" />
+                    <div className="flex items-center space-x-2 text-xs font-mono text-[#ded7c8] border border-[#202A33] px-3.5 py-2.5 bg-[#101820]">
+                      <Terminal className="w-3.5 h-3.5 text-[#00F0FF]" />
                       <span>22.05 kHz &bull; 128 Mels &bull; 88,200 Samples</span>
                     </div>
                   </div>
                 </div>
 
-                {/* Right Column: Decorative Soundwave & Spectrum Visualizer */}
-                <div className="lg:col-span-5 border border-[#202A33] bg-[#101820] p-6 space-y-4">
+                {/* Right Column: Decorative Multi-Band Soundwave & Spectrum Visualizer */}
+                <div className="lg:col-span-5 border border-[#202A33] bg-[#101820] p-6 space-y-4 accent-edge-cyan">
                   <div className="flex items-center justify-between text-xs font-mono text-[#64748B] border-b border-[#202A33] pb-2">
-                    <span>LIVE SPECTRUM VISUALIZER</span>
-                    <span className="text-[#C7F464] font-bold">CH 01 // DUAL-BAND</span>
+                    <span className="text-[#ded7c8]">LIVE SPECTRUM VISUALIZER</span>
+                    <span className="text-[#00F0FF] font-bold">CH 01 // MULTI-BAND</span>
                   </div>
 
-                  {/* Frequency Spectrum Bars */}
+                  {/* Multi-Chromatic Frequency Spectrum Bars */}
                   <div className="h-36 flex items-end justify-between gap-1 px-1 pt-4">
                     {[
-                      25, 45, 65, 80, 50, 95, 75, 40, 85, 90, 60, 35, 70, 85, 100, 75, 50, 90, 65, 40, 80, 60,
-                      45, 70, 90, 55, 30, 85, 65, 40, 50, 75,
-                    ].map((heightPct, idx) => (
-                      <div
-                        key={idx}
-                        className={`w-full transition-all duration-300 ${
-                          idx % 4 === 0
-                            ? "bg-[#C7F464]"
-                            : idx % 6 === 0
-                            ? "bg-[#FF6B35]"
-                            : "bg-[#202A33] hover:bg-[#64748B]"
-                        }`}
-                        style={{ height: `${heightPct}%` }}
-                      />
-                    ))}
+                      35, 60, 85, 95, 65, 100, 80, 45, 90, 95, 70, 45, 80, 90, 100, 85, 60, 95, 75, 50, 85, 70,
+                      55, 80, 95, 65, 40, 90, 75, 50, 65, 85,
+                    ].map((heightPct, idx) => {
+                      // Rich Audio Hardware Color Sequencing: Cyan -> Lime -> Violet -> Orange -> Amber
+                      const barColor =
+                        idx % 5 === 0
+                          ? "bg-[#00F0FF] shadow-[0_0_8px_rgba(0,240,255,0.4)]"
+                          : idx % 5 === 1
+                          ? "bg-[#C7F464] shadow-[0_0_8px_rgba(199,244,100,0.4)]"
+                          : idx % 5 === 2
+                          ? "bg-[#BD00FF] shadow-[0_0_8px_rgba(189,0,255,0.4)]"
+                          : idx % 5 === 3
+                          ? "bg-[#FF6B35] shadow-[0_0_8px_rgba(255,107,53,0.4)]"
+                          : "bg-[#F59E0B] shadow-[0_0_8px_rgba(245,158,11,0.4)]";
+
+                      return (
+                        <div
+                          key={idx}
+                          className={`w-full transition-all duration-300 ${barColor}`}
+                          style={{ height: `${heightPct}%` }}
+                        />
+                      );
+                    })}
                   </div>
 
                   <div className="grid grid-cols-3 gap-2 pt-2 border-t border-[#202A33] text-[10px] font-mono">
                     <div className="text-center p-2 bg-[#141e28] border border-[#202A33]">
                       <div className="text-[#64748B]">LATENCY</div>
-                      <div className="text-[#F4F0E8] font-bold mt-0.5">~13.4 ms</div>
+                      <div className="text-[#00F0FF] font-bold mt-0.5">~13.4 ms</div>
                     </div>
                     <div className="text-center p-2 bg-[#141e28] border border-[#202A33]">
                       <div className="text-[#64748B]">PARAMETERS</div>
-                      <div className="text-[#F4F0E8] font-bold mt-0.5">767.7 K</div>
+                      <div className="text-[#D946EF] font-bold mt-0.5">767.7 K</div>
                     </div>
                     <div className="text-center p-2 bg-[#141e28] border border-[#202A33]">
                       <div className="text-[#64748B]">CHECKPOINT</div>
@@ -579,7 +593,7 @@ export default function App() {
                 <div>
                   <h2 className="text-xl md:text-2xl font-display font-bold text-[#F4F0E8] flex items-center space-x-2">
                     <span>Environmental Sound Classifier</span>
-                    <span className="text-[10px] font-mono px-2 py-0.5 bg-[#202A33] text-[#C7F464] border border-[#2c3b47]">
+                    <span className="text-[10px] font-mono px-2 py-0.5 bg-[#202A33] text-[#00F0FF] border border-[#00F0FF]/30">
                       Confidence-Aware
                     </span>
                   </h2>
@@ -588,34 +602,34 @@ export default function App() {
                   </p>
                 </div>
 
-                {/* Instant Preset Buttons */}
-                <div className="flex flex-wrap items-center gap-1.5">
-                  <span className="text-xs font-mono text-[#64748B] mr-1">PRESETS:</span>
+                {/* Instant Preset Buttons with Signature Category Color Themes */}
+                <div className="flex flex-wrap items-center gap-2">
+                  <span className="text-xs font-mono text-[#64748B] mr-0.5">PRESETS:</span>
                   <button
                     type="button"
                     onClick={() => generateSamplePreset("siren", "analyze")}
-                    className="px-2.5 py-1 text-xs font-mono bg-[#141e28] hover:bg-[#202A33] text-[#F4F0E8] border border-[#202A33] hover:border-[#C7F464] transition"
+                    className="px-3 py-1.5 text-xs font-mono font-bold bg-[#FF6B35]/10 hover:bg-[#FF6B35]/25 text-[#FF6B35] border border-[#FF6B35]/50 hover:border-[#FF6B35] shadow-sm transition"
                   >
                     🚨 SIREN
                   </button>
                   <button
                     type="button"
                     onClick={() => generateSamplePreset("car_horn", "analyze")}
-                    className="px-2.5 py-1 text-xs font-mono bg-[#141e28] hover:bg-[#202A33] text-[#F4F0E8] border border-[#202A33] hover:border-[#C7F464] transition"
+                    className="px-3 py-1.5 text-xs font-mono font-bold bg-[#F59E0B]/10 hover:bg-[#F59E0B]/25 text-[#F59E0B] border border-[#F59E0B]/50 hover:border-[#F59E0B] shadow-sm transition"
                   >
                     🚗 HORN
                   </button>
                   <button
                     type="button"
                     onClick={() => generateSamplePreset("engine_idling", "analyze")}
-                    className="px-2.5 py-1 text-xs font-mono bg-[#141e28] hover:bg-[#202A33] text-[#F4F0E8] border border-[#202A33] hover:border-[#C7F464] transition"
+                    className="px-3 py-1.5 text-xs font-mono font-bold bg-[#00F0FF]/10 hover:bg-[#00F0FF]/25 text-[#00F0FF] border border-[#00F0FF]/50 hover:border-[#00F0FF] shadow-sm transition"
                   >
                     🚚 ENGINE
                   </button>
                   <button
                     type="button"
                     onClick={() => generateSamplePreset("jackhammer", "analyze")}
-                    className="px-2.5 py-1 text-xs font-mono bg-[#141e28] hover:bg-[#202A33] text-[#F4F0E8] border border-[#202A33] hover:border-[#C7F464] transition"
+                    className="px-3 py-1.5 text-xs font-mono font-bold bg-[#BD00FF]/10 hover:bg-[#BD00FF]/25 text-[#D946EF] border border-[#BD00FF]/50 hover:border-[#BD00FF] shadow-sm transition"
                   >
                     🔨 JACKHAMMER
                   </button>
@@ -959,20 +973,31 @@ export default function App() {
 
                         <div className="space-y-2 pt-1">
                           {prediction.probabilities.map((item, idx) => {
-                            const isTop = idx === 0;
+                            // Multi-spectral ranking colors
+                            const rankColor =
+                              idx === 0
+                                ? { text: "text-[#C7F464] font-bold", bar: "bg-[#C7F464] shadow-[0_0_6px_rgba(199,244,100,0.4)]" }
+                                : idx === 1
+                                ? { text: "text-[#00F0FF] font-semibold", bar: "bg-[#00F0FF] shadow-[0_0_6px_rgba(0,240,255,0.4)]" }
+                                : idx === 2
+                                ? { text: "text-[#D946EF]", bar: "bg-[#BD00FF]" }
+                                : idx === 3
+                                ? { text: "text-[#F59E0B]", bar: "bg-[#F59E0B]" }
+                                : { text: "text-[#ded7c8]", bar: "bg-[#2c3b47]" };
+
                             return (
                               <div key={item.class_id} className="space-y-1">
                                 <div className="flex justify-between text-xs font-mono">
-                                  <span className={isTop ? "font-bold text-[#C7F464]" : "text-[#ded7c8]"}>
+                                  <span className={rankColor.text}>
                                     {String(idx + 1).padStart(2, "0")}. {item.class_name.replace(/_/g, " ")}
                                   </span>
-                                  <span className={isTop ? "font-bold text-[#C7F464]" : "text-[#64748B]"}>
+                                  <span className={idx === 0 ? "font-bold text-[#C7F464]" : "text-[#64748B]"}>
                                     {(item.probability * 100).toFixed(1)}%
                                   </span>
                                 </div>
                                 <div className="w-full bg-[#101820] h-1.5 border border-[#202A33] overflow-hidden">
                                   <div
-                                    className={`h-full transition-all duration-300 ${isTop ? "bg-[#C7F464]" : "bg-[#2c3b47]"}`}
+                                    className={`h-full transition-all duration-300 ${rankColor.bar}`}
                                     style={{ width: `${item.probability * 100}%` }}
                                   />
                                 </div>
@@ -1371,27 +1396,27 @@ export default function App() {
               </div>
             ) : modelInfo ? (
               <div className="space-y-6">
-                {/* Spec Metric Cards */}
+                {/* Spec Metric Cards with Distinct Hardware Accent Edges */}
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                  <div className="bg-[#141e28] border border-[#202A33] p-4 font-mono">
-                    <span className="text-[10px] text-[#64748B]">TOTAL PARAMETERS</span>
+                  <div className="bg-[#141e28] border border-[#202A33] p-4 font-mono accent-edge-violet">
+                    <span className="text-[10px] text-[#D946EF] font-bold">TOTAL PARAMETERS</span>
                     <div className="text-xl font-bold text-[#F4F0E8] mt-1">{modelInfo.parameter_count.toLocaleString()}</div>
-                    <div className="text-[10px] text-[#C7F464] mt-0.5">Compact CNN</div>
+                    <div className="text-[10px] text-[#D946EF] mt-0.5">Compact CNN</div>
                   </div>
-                  <div className="bg-[#141e28] border border-[#202A33] p-4 font-mono">
-                    <span className="text-[10px] text-[#64748B]">MODEL FOOTPRINT</span>
+                  <div className="bg-[#141e28] border border-[#202A33] p-4 font-mono accent-edge-cyan">
+                    <span className="text-[10px] text-[#00F0FF] font-bold">MODEL FOOTPRINT</span>
                     <div className="text-xl font-bold text-[#F4F0E8] mt-1">{modelInfo.estimated_size_mb} MB</div>
-                    <div className="text-[10px] text-[#64748B] mt-0.5">Edge deployable</div>
+                    <div className="text-[10px] text-[#00F0FF] mt-0.5">Edge deployable</div>
                   </div>
-                  <div className="bg-[#141e28] border border-[#202A33] p-4 font-mono">
-                    <span className="text-[10px] text-[#64748B]">INPUT TENSOR</span>
+                  <div className="bg-[#141e28] border border-[#202A33] p-4 font-mono accent-edge-amber">
+                    <span className="text-[10px] text-[#F59E0B] font-bold">INPUT TENSOR</span>
                     <div className="text-xl font-bold text-[#F4F0E8] mt-1">1 &times; 128 &times; 173</div>
-                    <div className="text-[10px] text-[#64748B] mt-0.5">Log-Mel STFT</div>
+                    <div className="text-[10px] text-[#F59E0B] mt-0.5">Log-Mel STFT</div>
                   </div>
-                  <div className="bg-[#141e28] border border-[#202A33] p-4 font-mono">
-                    <span className="text-[10px] text-[#64748B]">CLASSES</span>
+                  <div className="bg-[#141e28] border border-[#202A33] p-4 font-mono accent-edge-lime">
+                    <span className="text-[10px] text-[#C7F464] font-bold">CLASSES</span>
                     <div className="text-xl font-bold text-[#C7F464] mt-1">{modelInfo.num_classes} Categories</div>
-                    <div className="text-[10px] text-[#64748B] mt-0.5">UrbanSound8K</div>
+                    <div className="text-[10px] text-[#C7F464] mt-0.5">UrbanSound8K</div>
                   </div>
                 </div>
 
